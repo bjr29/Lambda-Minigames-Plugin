@@ -1,4 +1,4 @@
-package com.bjrushworth29.utils;
+package com.bjrushworth29.games.util;
 
 import org.bukkit.scoreboard.Team;
 

@@ -1,4 +1,4 @@
-package com.bjrushworth29.utils;
+package com.bjrushworth29.games.util;
 
 import com.bjrushworth29.enums.Constraints;
 import com.bjrushworth29.enums.GameState;
@@ -6,6 +6,7 @@ import com.bjrushworth29.enums.GameType;
 import com.bjrushworth29.managers.GameManager;
 import com.bjrushworth29.managers.PlayerConstraintManager;
 import com.bjrushworth29.managers.WorldManager;
+import com.bjrushworth29.utils.Countdown;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
@@ -93,10 +94,10 @@ public class Game {
 	private void cancelGame() {
 		for (Player player : players) {
 			WorldManager.teleportToSpawn(player, Bukkit.getWorld("hub"));
-			player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "GAME CANCELLED: Players left!");
+			player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "GAME CANCELLED: Not enough players to start!");
 		}
 
-		GameManager.destroyGame(this);
+		GameManager.removeActiveGame(this);
 	}
 
 	private void start() {
@@ -108,11 +109,16 @@ public class Game {
 
 		gameState = GameState.STARTING;
 
-		// TODO: Start countdown
-
-		for (Player player : players) {
-			PlayerConstraintManager.applyConstraints(player, gameConstraints);
-		}
+		new Countdown(5,
+				(timer) -> players.forEach(
+						player -> player.sendMessage(String.format(ChatColor.GOLD + "" + ChatColor.BOLD + "Game starts in: %d!", timer.getSeconds()))
+				),
+				() -> players.forEach(
+						player -> {
+							player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Game started!");
+							PlayerConstraintManager.applyConstraints(player, gameConstraints);
+						})
+		).start();
 	}
 
 	public GameType getGameType() {

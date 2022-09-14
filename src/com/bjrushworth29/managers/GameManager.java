@@ -2,25 +2,28 @@ package com.bjrushworth29.managers;
 
 import com.bjrushworth29.enums.Constraints;
 import com.bjrushworth29.enums.GameType;
-import com.bjrushworth29.utils.Game;
-import com.bjrushworth29.utils.GameWorld;
-import com.bjrushworth29.utils.TeamObject;
+import com.bjrushworth29.games.util.Game;
+import com.bjrushworth29.games.util.GameQueue;
+import com.bjrushworth29.games.util.GameWorld;
+import com.bjrushworth29.games.util.TeamObject;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 public class GameManager {
 	private static final HashMap<String, Game> GAMES = new HashMap<>();
 	private static final ArrayList<GameWorld> GAME_WORLDS = new ArrayList<>();
 	private static final ArrayList<Game> ACTIVE_GAMES = new ArrayList<>();
-	private static final HashMap<Game, ArrayList<Player>> QUEUES = new HashMap<>();
+	private static final HashMap<Game, GameQueue> QUEUES = new HashMap<>();
 
 	private static final Random RANDOM = new Random();
 
 	static {
+		createGames();
+		createGameWorlds();
+
 		System.out.print("Initialised games");
 	}
 
@@ -36,19 +39,33 @@ public class GameManager {
 	public static void enterQueue(Player player, String gameName) {
 		Game game = GAMES.get(gameName);
 
-		ArrayList<Player> players = QUEUES.get(game);
+		if (!QUEUES.containsKey(game)) {
+			QUEUES.put(game, new GameQueue(game.getMaxPlayers() * 2));
+		}
+
+		GameQueue gameQueue = QUEUES.get(game);
+		ArrayList<Player> players = gameQueue.getPlayers();
 
 		players.add(player);
 
-		if (players.size() >= game.getMaxPlayers()) {
-			createGameSession(game, players.toArray(new Player[0]));
+		player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "You have entered queue!");
 
-			QUEUES.remove(game);
+		if (players.size() >= game.getMaxPlayers()) {
+			startGame(game, players);
+
+		} else if (!gameQueue.countdown.isRunning() && players.size() >= game.getMinPlayers()) {
+			gameQueue.countdown.completed = () -> startGame(game, players);
 		}
 	}
 
+	private static void startGame(Game game, ArrayList<Player> players) {
+		createGameSession(game, players.toArray(new Player[0]));
+
+		QUEUES.remove(game);
+	}
+
 	public static void leaveQueue(Player player, String gameName) {
-		QUEUES.get(GAMES.get(gameName)).remove(player);
+		QUEUES.get(GAMES.get(gameName)).getPlayers().remove(player);
 	}
 
 	public static void removePlayerFromAnyGame(Player player) {
@@ -57,24 +74,21 @@ public class GameManager {
 		}
 	}
 
-	private static void createGameWorld() {
+	private static void createGameWorlds() {
 		GAME_WORLDS.add(new GameWorld(
-				"test_game_world",
+				"test_game",
 				0,
 				0,
-				GameType.TEST,
-				new TeamObject<Location>[] {
-						new Location(WorldManager.getWorld("test_game_world"), 0, 64, 0), // TODO: FIX
-						null,
-						false,
-						true
-				},
+				List.of(GameType.TEST),
+				List.of(new TeamObject<>(
+						new Location(WorldManager.getWorld("test_game"), 0, 64, 0), null, false, true)
+				),
 				null,
 				null
 		));
 	}
 
-	private static void createGame() {
+	private static void createGames() {
 		GAMES.put("Test Game", new Game(
 				GameType.TEST,
 				Constraints.PVP_DEFAULT,
@@ -94,7 +108,7 @@ public class GameManager {
 		));
 	}
 
-	public static void destroyGame(Game game) {
+	public static void removeActiveGame(Game game) {
 		ACTIVE_GAMES.remove(game);
 	}
 }
