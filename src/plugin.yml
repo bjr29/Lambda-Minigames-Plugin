@@ -4,3 +4,9 @@ main: com.bjrushworth29.LambdaMinigames
 api-version: 1.8.8
 author: bjr29
 prefix: LambdaM
+
+commands:
+  endgame:
+    usage: /<command>
+    permission: op
+    permission-message: "Insufficient privileges to use command!"

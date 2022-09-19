@@ -14,7 +14,9 @@ public class PlayerDamaged implements Listener {
 			return;
 		}
 
-		if (!PlayerConstraintManager.getAppliedConstraints(player).takesFallDamage() && event.getCause() == EntityDamageEvent.DamageCause.FALL) {
+		if (!PlayerConstraintManager.getAppliedConstraints(player).takesAnyDamage() ||
+			(!PlayerConstraintManager.getAppliedConstraints(player).takesFallDamage() && event.getCause() == EntityDamageEvent.DamageCause.FALL)
+		) {
 			event.setCancelled(true);
 		}
 	}

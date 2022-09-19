@@ -17,16 +17,17 @@ public class SelectGameScreen implements Listener {
 		Inventory inventory = event.getClickedInventory();
 		ItemStack clicked = event.getCurrentItem();
 
-		if (clicked.getItemMeta() == null || !inventory.equals(ScreenManager.getDefaultScreen("Select Game"))) {
+		if (clicked.getItemMeta() == null || !inventory.equals(ScreenManager.getDefaultScreen("selectGame"))) {
 			return;
 		}
 
-		ItemStack testGameButton = ItemManager.getItem("SG Screen - Test Game");
+		event.setCancelled(true);
+		player.closeInventory();
+
+		ItemStack testGameButton = ItemManager.getItem("screenTestGame");
 
 		if (ItemManager.equalMeta(clicked, testGameButton)) {
-			GameManager.enterQueue(player, "Test Game");
+			GameManager.enterQueue(player, "testGame");
 		}
-
-		event.setCancelled(true);
 	}
 }

@@ -16,6 +16,6 @@ public class PlayerLeftServer implements Listener {
 
 		PlayerConstraintManager.clearPlayer(player);
 
-		GameManager.removePlayerFromAnyGame(player);
+		GameManager.removePlayer(player);
 	}
 }

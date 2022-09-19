@@ -1,5 +1,7 @@
 package com.bjrushworth29.events;
 
+import com.bjrushworth29.games.util.Game;
+import com.bjrushworth29.managers.GameManager;
 import com.bjrushworth29.managers.InventoryLoadoutManager;
 import com.bjrushworth29.managers.PlayerConstraintManager;
 import com.bjrushworth29.utils.PlayerUtil;
@@ -15,7 +17,16 @@ public class PlayerChangedWorld implements Listener {
 		String worldName = player.getWorld().getName();
 
 		PlayerUtil.reset(player);
-		InventoryLoadoutManager.giveInventoryLoadout(player, InventoryLoadoutManager.getDefaultLoadout(worldName));
-		PlayerConstraintManager.applyConstraints(player, worldName);
+
+		if (worldName.equals("hub")) {
+			Game game = GameManager.getPlayerGame(player);
+
+			if (game != null) {
+				game.removePlayer(player);
+			}
+
+			InventoryLoadoutManager.giveInventoryLoadout(player, InventoryLoadoutManager.getDefaultLoadout("hub"));
+			PlayerConstraintManager.applyConstraints(player, "hub");
+		}
 	}
 }

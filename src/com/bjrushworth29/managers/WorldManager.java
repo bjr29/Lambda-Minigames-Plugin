@@ -1,5 +1,6 @@
 package com.bjrushworth29.managers;
 
+import com.bjrushworth29.utils.Debug;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
@@ -26,8 +27,16 @@ public class WorldManager {
 	// All methods below are copied and pasted from: https://bukkit.org/threads/unload-delete-copy-worlds.182814/
 	public static void unloadWorld(World world) {
 		if(world != null) {
-			Bukkit.getServer().unloadWorld(world, true);
+			Bukkit.getServer().unloadWorld(world, false);
 		}
+	}
+
+	public static void deleteWorld(World world, boolean unloadWorld) {
+		if (unloadWorld) {
+			unloadWorld(world);
+		}
+
+		deleteWorld(world.getWorldFolder());
 	}
 
 	public static void deleteWorld(File worldFolder) {

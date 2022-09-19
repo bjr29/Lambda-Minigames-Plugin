@@ -1,12 +1,12 @@
 package com.bjrushworth29.enums;
 
 public enum InventoryRows {
-	One(9),
-	Two(18),
-	Three(27),
-	Four(36),
-	Five(45),
-	Six(54);
+	ONE(9),
+	TWO(18),
+	THREE(27),
+	FOUR(36),
+	FIVE(45),
+	SIX(54);
 
 	private final int value;
 

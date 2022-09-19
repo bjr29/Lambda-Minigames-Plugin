@@ -1,6 +1,7 @@
 package com.bjrushworth29.managers;
 
 import com.bjrushworth29.enums.Constraints;
+import com.bjrushworth29.utils.Debug;
 import com.bjrushworth29.utils.PlayerConstraints;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -55,6 +56,8 @@ public class PlayerConstraintManager {
 				false,
 				false
 		));
+
+		Debug.info("Initialised constraints");
 	}
 
 	public static PlayerConstraints getAppliedConstraints(Player player) {
@@ -73,8 +76,9 @@ public class PlayerConstraintManager {
 		PlayerConstraints constraints = CONSTRAINTS.get(constraintName);
 
 		player.setGameMode(constraints.gameMode());
+		player.setWalkSpeed(constraints.canMove() ? 0.2f : 0);
 
-		System.out.print(String.format("Given '%s' state '%s'", player.getName(), constraintName));
+		Debug.info("Given '%s' state '%s'", player.getName(), constraintName);
 	}
 
 	public static void clearPlayer(Player player) {

@@ -8,13 +8,14 @@ import java.util.function.Consumer;
 public class Countdown implements Runnable {
 	private Integer id;
 
+	private final int totalSeconds;
 	private int seconds;
-	private boolean running;
 
 	public Consumer<Countdown> tick;
 	public Runnable completed;
 
 	public Countdown(int seconds, Consumer<Countdown> tick, Runnable completed) {
+		this.totalSeconds = seconds;
 		this.seconds = seconds;
 		this.tick = tick;
 		this.completed = completed;
@@ -27,14 +28,15 @@ public class Countdown implements Runnable {
 			completed.run();
 
 			if (id != null) {
-				running = false;
 				Bukkit.getScheduler().cancelTask(id);
 			}
 
 			return;
 		}
 
-		tick.accept(this);
+		if (tick != null) {
+			tick.accept(this);
+		}
 
 		seconds--;
 	}
@@ -44,11 +46,19 @@ public class Countdown implements Runnable {
 	}
 
 	public boolean isRunning() {
-		return running;
+		return Bukkit.getScheduler().isCurrentlyRunning(id);
 	}
 
 	public void start() {
-		running = true;
 		id = Bukkit.getScheduler().scheduleSyncRepeatingTask(LambdaMinigames.getPlugin(), this, 0L, 20L);
+	}
+
+	public void restart() {
+		seconds = totalSeconds;
+		Bukkit.getScheduler().cancelTask(id);
+	}
+
+	public void stop() {
+		Bukkit.getScheduler().cancelTask(id);
 	}
 }

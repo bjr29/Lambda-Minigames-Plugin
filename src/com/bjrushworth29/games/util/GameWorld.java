@@ -13,7 +13,7 @@ public record GameWorld(String name, int minTeams, int maxTeams, List<GameType> 
 						List<TeamObject<Location>> pointPitLocations) {
 
 	public World createSessionWorld() {
-		String session_world = String.format("active_game_%s_%d", name, System.currentTimeMillis());
+		String session_world = String.format("%d_active_game_%s", System.currentTimeMillis(), name);
 
 		WorldManager.copyWorld(
 				new File(String.format("game_%s", name)),

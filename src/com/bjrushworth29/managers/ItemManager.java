@@ -1,5 +1,6 @@
 package com.bjrushworth29.managers;
 
+import com.bjrushworth29.utils.Debug;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -12,15 +13,23 @@ public class ItemManager {
 	private static final HashMap<String, ItemStack> ITEMS = new HashMap<>();
 
 	static {
-		ITEMS.put("Select Game", create(Material.COMPASS, ChatColor.BLUE + "Select Game"));
+		ITEMS.put("selectGame", create(Material.COMPASS, ChatColor.BLUE + "Select Game"));
+		ITEMS.put("leaveQueue", create(Material.REDSTONE, ChatColor.RED + "Leave Queue"));
 
-		ITEMS.put("SG Screen - Test Game", create(Material.DIAMOND_SWORD, ChatColor.BLUE + "Test Game"));
+		ITEMS.put("screenTestGame", create(Material.DIAMOND_SWORD, ChatColor.BLUE + "Test Game"));
+		ITEMS.put("screenSumoGame", create(Material.WOOL, ChatColor.BLUE + "Sumo"));
 
-		System.out.print("Initialised items");
+		Debug.info("Initialised items");
 	}
 
 	public static ItemStack getItem(String name) {
-		return ITEMS.get(name);
+		ItemStack item = ITEMS.get(name);
+
+		if (item == null) {
+			Debug.warn("Attempted to get item '%s' but it doesn't exist");
+		}
+
+		return item;
 	}
 
 	public static boolean equalMeta(ItemStack a, ItemStack b) {

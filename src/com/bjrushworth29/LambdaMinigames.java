@@ -1,5 +1,6 @@
 package com.bjrushworth29;
 
+import com.bjrushworth29.commands.EndGameCommand;
 import com.bjrushworth29.events.*;
 import com.bjrushworth29.items.SelectGameItem;
 import com.bjrushworth29.screens.SelectGameScreen;
@@ -27,9 +28,14 @@ public class LambdaMinigames extends JavaPlugin {
 	}
 
 	private void initAll() {
+		registerCommands();
 		initEvents();
 		initItemEvents();
 		initScreenEvents();
+	}
+
+	private void registerCommands() {
+		getCommand("endgame").setExecutor(new EndGameCommand());
 	}
 
 	private void initEvents() {

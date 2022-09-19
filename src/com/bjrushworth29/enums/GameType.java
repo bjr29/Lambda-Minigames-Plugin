@@ -1,9 +1,10 @@
 package com.bjrushworth29.enums;
 
 public enum GameType {
-	BedDestruction,
-	LastStanding,
-	BedLastStanding,
-	Sumo,
-	TEST, Pit
+	BED_DESTRUCTION,
+	LAST_STANDING,
+	BED_LAST_STANDING,
+	SUMO,
+	TEST,
+	PIT
 }

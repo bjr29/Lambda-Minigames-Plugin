@@ -6,11 +6,15 @@ import com.bjrushworth29.games.util.Game;
 import com.bjrushworth29.games.util.GameQueue;
 import com.bjrushworth29.games.util.GameWorld;
 import com.bjrushworth29.games.util.TeamObject;
+import com.bjrushworth29.utils.Debug;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 
 public class GameManager {
 	private static final HashMap<String, Game> GAMES = new HashMap<>();
@@ -24,23 +28,44 @@ public class GameManager {
 		createGames();
 		createGameWorlds();
 
-		System.out.print("Initialised games");
+		Debug.info("Initialised games");
 	}
 
-	public static void createGameSession(Game game, Player[] players) {
-		GameWorld[] selection = (GameWorld[]) GAME_WORLDS.stream()
+	public static void createGameSession(Game game) {
+		GameWorld[] selection = GAME_WORLDS.stream()
 				.filter(world -> world.gameTypes().contains(game.getGameType()))
-				.toArray();
-		GameWorld gameWorldSettings = selection[RANDOM.nextInt(selection.length - 1)];
+				.toList()
+				.toArray(new GameWorld[0]);
+		GameWorld gameWorldSettings = selection[RANDOM.nextInt(selection.length)];
 
-		game.init(players, gameWorldSettings);
+		game.init(gameWorldSettings);
+	}
+
+	private static void startGame(Game game, ArrayList<Player> players) {
+		Game newGame = new Game(game);
+
+		createGameSession(newGame);
+
+		for (Player player : players) {
+			newGame.addPlayer(player);
+		}
+
+		ACTIVE_GAMES.add(newGame);
+
+		QUEUES.remove(game);
 	}
 
 	public static void enterQueue(Player player, String gameName) {
+		if (getPlayerGame(player) != null) {
+			player.sendMessage(ChatColor.RED + "Can't enter queue as you're already in a queue or game");
+
+			return;
+		}
+
 		Game game = GAMES.get(gameName);
 
 		if (!QUEUES.containsKey(game)) {
-			QUEUES.put(game, new GameQueue(game.getMaxPlayers() * 2));
+			QUEUES.put(game, new GameQueue(game.getMaxPlayers() * 2, game.getGameType()));
 		}
 
 		GameQueue gameQueue = QUEUES.get(game);
@@ -48,7 +73,7 @@ public class GameManager {
 
 		players.add(player);
 
-		player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "You have entered queue!");
+		player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "You have entered the queue!");
 
 		if (players.size() >= game.getMaxPlayers()) {
 			startGame(game, players);
@@ -58,19 +83,44 @@ public class GameManager {
 		}
 	}
 
-	private static void startGame(Game game, ArrayList<Player> players) {
-		createGameSession(game, players.toArray(new Player[0]));
+	public static void leaveQueue(Player player) {
+		Game game = getPlayerGame(player);
 
-		QUEUES.remove(game);
+		if (game == null) {
+			Debug.warn("Player '%s' attempted to leave queue whilst not in a queue!", player.getName());
+
+			return;
+		}
+
+		InventoryLoadoutManager.giveInventoryLoadout(player, InventoryLoadoutManager.getDefaultLoadout("hub"));
+
+		GameQueue queue = QUEUES.get(game);
+		ArrayList<Player> players = queue.getPlayers();
+
+		players.remove(player);
+
+		if (players.size() < game.getMinPlayers()) {
+			queue.countdown.restart();
+		}
 	}
 
-	public static void leaveQueue(Player player, String gameName) {
-		QUEUES.get(GAMES.get(gameName)).getPlayers().remove(player);
+	public static Game getPlayerGame(Player player) {
+		for (Game game : ACTIVE_GAMES) {
+			if (game.containsPlayer(player)) {
+				return game;
+			}
+		}
+
+		return null;
 	}
 
-	public static void removePlayerFromAnyGame(Player player) {
+	public static void removePlayer(Player player) {
 		for (Game game : ACTIVE_GAMES) {
 			game.removePlayer(player);
+		}
+
+		for (GameQueue queue : QUEUES.values()) {
+			queue.getPlayers().remove(player);
 		}
 	}
 
@@ -89,7 +139,7 @@ public class GameManager {
 	}
 
 	private static void createGames() {
-		GAMES.put("Test Game", new Game(
+		GAMES.put("testGame", new Game(
 				GameType.TEST,
 				Constraints.PVP_DEFAULT,
 				1,
@@ -98,8 +148,8 @@ public class GameManager {
 				false
 		));
 
-		GAMES.put("Sumo", new Game(
-				GameType.Sumo,
+		GAMES.put("sumo", new Game(
+				GameType.SUMO,
 				Constraints.PVP_SUMO,
 				2,
 				2,
