@@ -19,7 +19,7 @@ public class PlayerConstraintManager {
 				true,
 				false,
 				true,
-				true,
+				false,
 				false,
 				false
 		));

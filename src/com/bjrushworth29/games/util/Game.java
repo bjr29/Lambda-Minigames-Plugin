@@ -98,10 +98,16 @@ public class Game {
 		}
 
 		for (Player gamePlayer : players) {
-			gamePlayer.sendMessage(String.format("%s has left", removedPlayer.getDisplayName()));
+			if (gamePlayer != removedPlayer) {
+				gamePlayer.sendMessage(String.format("%s has left", removedPlayer.getDisplayName()));
+			}
 		}
 
 		players.remove(removedPlayer);
+
+		if (players.size() == 0) {
+			cancel();
+		}
 
 		cancelledPlayers++;
 
@@ -118,6 +124,7 @@ public class Game {
 		}
 
 		GameManager.removeActiveGame(this);
+		WorldManager.deleteWorld(world, true);
 	}
 
 	public void end(Player winner) {
