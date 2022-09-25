@@ -11,7 +11,7 @@ public class PlayerMoved implements Listener {
 	private void handler(PlayerMoveEvent event) {
 		Player player = event.getPlayer();
 
-		if (!PlayerConstraintManager.getAppliedConstraints(player).canMove()) {
+		if (!PlayerConstraintManager.getAppliedConstraints(player).canMove() && event.getFrom().getY() != event.getTo().getY()) {
 			event.setCancelled(true);
 		}
 	}

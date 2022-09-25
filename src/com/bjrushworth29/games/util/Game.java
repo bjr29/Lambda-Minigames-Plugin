@@ -8,6 +8,7 @@ import com.bjrushworth29.managers.PlayerConstraintManager;
 import com.bjrushworth29.managers.WorldManager;
 import com.bjrushworth29.utils.Countdown;
 import com.bjrushworth29.utils.Debug;
+import com.bjrushworth29.utils.PlayerGameConstraints;
 import com.bjrushworth29.utils.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -16,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Game {
 	private final GameType gameType;
@@ -26,12 +28,12 @@ public class Game {
 
 	private final boolean useTeams;
 	private final boolean canRejoin;
-	private World world;
-
-	private GameWorld worldSettings;
 	private GameState gameState;
 
-	private final ArrayList<Player> players;
+	private World world;
+	private GameWorld worldSettings;
+
+	private final HashMap<Player, PlayerGameConstraints> players;
 
 	private int joiningPlayers;
 	private int cancelledPlayers;
@@ -40,7 +42,7 @@ public class Game {
 	public Game(GameType gameType, Constraints gameConstraints, int maxPlayers, int minPlayers, boolean useTeams, boolean canRejoin) {
 		this.maxPlayers = maxPlayers;
 		this.minPlayers = minPlayers;
-		this.players = new ArrayList<>();
+		this.players = new HashMap<>();
 		this.useTeams = useTeams;
 		this.gameType = gameType;
 		this.gameConstraints = gameConstraints;
@@ -51,7 +53,7 @@ public class Game {
 	public Game(Game game) {
 		this.maxPlayers = game.getMaxPlayers();
 		this.minPlayers = game.getMinPlayers();
-		this.players = new ArrayList<>(getMaxPlayers());
+		this.players = new HashMap<>();
 		this.useTeams = game.canUseTeams();
 		this.gameType = game.getGameType();
 		this.gameConstraints = game.getGameConstraints();
@@ -81,7 +83,7 @@ public class Game {
 //			// TODO
 //		}
 
-		players.add(player);
+		players.put(player, null);
 
 		PlayerConstraintManager.applyConstraints(player, Constraints.WAITING);
 		WorldManager.teleportToSpawn(player, world);
@@ -92,12 +94,12 @@ public class Game {
 	}
 
 	public void removePlayer(Player removedPlayer) {
-		if (!players.contains(removedPlayer)) {
+		if (!players.containsKey(removedPlayer)) {
 			Debug.warn("Attempted to remove '%s' from a game they're not in", removedPlayer);
 			return;
 		}
 
-		for (Player gamePlayer : players) {
+		for (Player gamePlayer : players.keySet()) {
 			if (gamePlayer != removedPlayer) {
 				gamePlayer.sendMessage(String.format("%s has left", removedPlayer.getDisplayName()));
 			}
@@ -117,7 +119,7 @@ public class Game {
 	}
 
 	private void cancel() {
-		for (Player player : players) {
+		for (Player player : players.keySet()) {
 			WorldManager.teleportToSpawn(player, Bukkit.getWorld("hub"));
 
 			player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "GAME CANCELLED: Not enough players to start!");
@@ -130,7 +132,7 @@ public class Game {
 	public void end(Player winner) {
 		Title title = new Title(String.format(ChatColor.GREEN + "%s has won!", winner.getName()), "", 0, 5, 0);
 
-		for (Player player : players) {
+		for (Player player : players.keySet()) {
 			new Countdown(
 					5,
 					null,
@@ -162,13 +164,13 @@ public class Game {
 				(timer) -> {
 					Title title = new Title(String.format(ChatColor.GOLD + "Game starting in %s seconds", timer.getSeconds()), "", 0, 1, 0);
 
-					for (Player player : players) {
+					for (Player player : players.keySet()) {
 						player.sendMessage(String.format(ChatColor.GOLD + "" + ChatColor.BOLD + "Game starts in: %d!", timer.getSeconds()));
 						title.send(player);
 					}
 				},
 				() -> {
-					for (Player player : players) {
+					for (Player player : players.keySet()) {
 						player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Game started!");
 						PlayerConstraintManager.applyConstraints(player, gameConstraints);
 					}
@@ -189,15 +191,19 @@ public class Game {
 	}
 
 	public Player[] getPlayers() {
-		return players.toArray(new Player[0]);
+		return players.keySet().toArray(new Player[0]);
 	}
 
 	public boolean containsPlayer(Player player) {
-		return players.stream().anyMatch(x -> x.getUniqueId() == player.getUniqueId());
+		return players.keySet().stream().anyMatch(x -> x.getUniqueId() == player.getUniqueId());
 	}
 
 	public Constraints getGameConstraints() {
 		return gameConstraints;
+	}
+
+	public PlayerGameConstraints getPlayerGameConstraints(Player player) {
+		return players.get(player);
 	}
 
 	public boolean canUseTeams() {

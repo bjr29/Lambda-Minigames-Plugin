@@ -1,7 +1,7 @@
 package com.bjrushworth29.managers;
 
-import com.bjrushworth29.utils.Debug;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
@@ -21,7 +21,12 @@ public class WorldManager {
 	}
 
 	public static void teleportToSpawn(Player player, World world) {
-		player.teleport(world.getSpawnLocation().add(new Vector(0.5, 0, 0.5)));
+		player.teleport(getSpawnLocation(world));
+	}
+
+	public static Location getSpawnLocation(World world) {
+		Location spawnLocation = world.getSpawnLocation();
+		return world.getHighestBlockAt(spawnLocation).getLocation().add(new Vector(0.5, 0, 0.5));
 	}
 
 	// All methods below are copied and pasted from: https://bukkit.org/threads/unload-delete-copy-worlds.182814/

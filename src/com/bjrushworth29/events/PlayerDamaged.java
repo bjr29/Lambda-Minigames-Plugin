@@ -1,6 +1,7 @@
 package com.bjrushworth29.events;
 
 import com.bjrushworth29.managers.PlayerConstraintManager;
+import com.bjrushworth29.utils.PlayerGameConstraints;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,6 +20,12 @@ public class PlayerDamaged implements Listener {
 		) {
 			event.setCancelled(true);
 		}
+
+		PlayerGameConstraints gameConstraints = game.getAppliedGameConstraints(player);
+
+		if (gameConstraints != null) {
+			event.setCancelled(gameConstraints.hasForceField());
+		}
 	}
 
 	@EventHandler
@@ -29,6 +36,18 @@ public class PlayerDamaged implements Listener {
 
 		if (!(PlayerConstraintManager.getAppliedConstraints(player).pvp() && PlayerConstraintManager.getAppliedConstraints(damager).pvp())) {
 			event.setCancelled(true);
+		}
+		
+		PlayerGameConstraints playerGameConstraints = game.getAppliedGameConstraints(player);
+		PlayerGameConstraints damagerGameConstraints = game.getAppliedGameConstraints(player);
+
+		if (playerGameConstraints != null && damagerGameConstraints != null) {
+			if (playerGameConstraints.hasForceField()) {
+				event.setCancelled(true);
+	
+			} else if (damagerGameConstraints.hasForceField()) {
+				damagerGameConstraints.setForceField(false);
+			}
 		}
 	}
 }

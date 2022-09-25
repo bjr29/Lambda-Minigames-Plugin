@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 public class PlayerConstraintManager {
 	private static final HashMap<String, PlayerConstraints> CONSTRAINTS = new HashMap<>();
-	private static final HashMap<String, String> APPLIED_CONSTRAINTS = new HashMap<>();
+	private static final HashMap<Player, String> APPLIED_CONSTRAINTS = new HashMap<>();
 
 	static {
 		CONSTRAINTS.put(Constraints.HUB.toString(), new PlayerConstraints(
@@ -62,7 +62,7 @@ public class PlayerConstraintManager {
 
 	public static PlayerConstraints getAppliedConstraints(Player player) {
 		return CONSTRAINTS.get(
-				APPLIED_CONSTRAINTS.get(player.getName())
+				APPLIED_CONSTRAINTS.get(player)
 		);
 	}
 
@@ -71,17 +71,17 @@ public class PlayerConstraintManager {
 	}
 
 	public static void applyConstraints(Player player, String constraintName) {
-		APPLIED_CONSTRAINTS.put(player.getName(), constraintName);
+		APPLIED_CONSTRAINTS.put(player, constraintName);
 
 		PlayerConstraints constraints = CONSTRAINTS.get(constraintName);
 
 		player.setGameMode(constraints.gameMode());
 		player.setWalkSpeed(constraints.canMove() ? 0.2f : 0);
 
-		Debug.info("Given '%s' state '%s'", player.getName(), constraintName);
+		Debug.info("Given '%s' state '%s'", player, constraintName);
 	}
 
 	public static void clearPlayer(Player player) {
-		APPLIED_CONSTRAINTS.remove(player.getName());
+		APPLIED_CONSTRAINTS.remove(player);
 	}
 }
