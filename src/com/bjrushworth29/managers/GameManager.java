@@ -145,7 +145,9 @@ public class GameManager {
 				1,
 				1,
 				false,
-				false
+				false,
+				1,
+				1
 		));
 
 		GAMES.put("sumo", new Game(
@@ -154,11 +156,20 @@ public class GameManager {
 				2,
 				2,
 				false,
-				false
+				false,
+				1,
+				0
 		));
 	}
 
 	public static void removeActiveGame(Game game) {
 		ACTIVE_GAMES.remove(game);
+		game.delete();
+	}
+
+	public static void removeActiveGames() {
+		for (Game game : ACTIVE_GAMES) {
+			removeActiveGame(game);
+		}
 	}
 }

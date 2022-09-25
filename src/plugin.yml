@@ -10,3 +10,11 @@ commands:
     usage: /<command>
     permission: op
     permission-message: "Insufficient privileges to use command!"
+    aliases:
+      - end
+  lobby:
+    usage: /<command>
+    aliases:
+      - l
+      - hub
+      - h

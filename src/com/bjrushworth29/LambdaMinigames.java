@@ -1,8 +1,10 @@
 package com.bjrushworth29;
 
 import com.bjrushworth29.commands.EndGameCommand;
+import com.bjrushworth29.commands.LobbyCommand;
 import com.bjrushworth29.events.*;
 import com.bjrushworth29.items.SelectGameItem;
+import com.bjrushworth29.managers.GameManager;
 import com.bjrushworth29.screens.SelectGameScreen;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,7 +22,7 @@ public class LambdaMinigames extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-
+		GameManager.removeActiveGames();
 	}
 
 	public static JavaPlugin getPlugin() {
@@ -36,6 +38,7 @@ public class LambdaMinigames extends JavaPlugin {
 
 	private void registerCommands() {
 		getCommand("endgame").setExecutor(new EndGameCommand());
+		getCommand("lobby").setExecutor(new LobbyCommand());
 	}
 
 	private void initEvents() {

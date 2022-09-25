@@ -1,7 +1,10 @@
 package com.bjrushworth29.events;
 
+import com.bjrushworth29.games.util.Game;
+import com.bjrushworth29.managers.GameManager;
 import com.bjrushworth29.managers.PlayerConstraintManager;
-import com.bjrushworth29.utils.PlayerGameConstraints;
+import com.bjrushworth29.utils.Debug;
+import com.bjrushworth29.utils.PlayerGameData;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,10 +24,23 @@ public class PlayerDamaged implements Listener {
 			event.setCancelled(true);
 		}
 
-		PlayerGameConstraints gameConstraints = game.getAppliedGameConstraints(player);
+		Game game = GameManager.getPlayerGame(player);
 
-		if (gameConstraints != null) {
-			event.setCancelled(gameConstraints.hasForceField());
+		if (game == null) {
+			return;
+		}
+
+		PlayerGameData gameConstraints = game.getPlayerGameConstraints(player);
+
+		if (gameConstraints.hasSpawnProtection()) {
+			event.setCancelled(true);
+			return;
+		}
+
+		if (player.getHealth() - event.getFinalDamage() <= 0) {
+			event.setCancelled(true);
+
+			game.handleDeathOrLeave(player, false);
 		}
 	}
 
@@ -36,18 +52,36 @@ public class PlayerDamaged implements Listener {
 
 		if (!(PlayerConstraintManager.getAppliedConstraints(player).pvp() && PlayerConstraintManager.getAppliedConstraints(damager).pvp())) {
 			event.setCancelled(true);
+			return;
 		}
-		
-		PlayerGameConstraints playerGameConstraints = game.getAppliedGameConstraints(player);
-		PlayerGameConstraints damagerGameConstraints = game.getAppliedGameConstraints(player);
 
-		if (playerGameConstraints != null && damagerGameConstraints != null) {
-			if (playerGameConstraints.hasForceField()) {
-				event.setCancelled(true);
-	
-			} else if (damagerGameConstraints.hasForceField()) {
-				damagerGameConstraints.setForceField(false);
-			}
+		Game game = GameManager.getPlayerGame(player);
+
+		if (game != GameManager.getPlayerGame(damager)) {
+			Debug.warn("Players '%s' and '%s' attempted to attack one another but are in separate games", player, damager);
+
+			return;
+		}
+
+		if (game == null) {
+			return;
+		}
+
+		PlayerGameData playerGameConstraints = game.getPlayerGameConstraints(player);
+		PlayerGameData damagerGameConstraints = game.getPlayerGameConstraints(damager);
+
+		if (playerGameConstraints.hasSpawnProtection()) {
+			event.setCancelled(true);
+			return;
+
+		} else if (damagerGameConstraints.hasSpawnProtection()) {
+			damagerGameConstraints.removeSpawnProtection();
+		}
+
+		if (player.getHealth() - event.getFinalDamage() <= 0) {
+			event.setCancelled(true);
+
+			game.handleDeathOrLeave(player, false);
 		}
 	}
 }
