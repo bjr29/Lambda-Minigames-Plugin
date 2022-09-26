@@ -1,7 +1,8 @@
 package com.bjrushworth29.managers;
 
 import com.bjrushworth29.enums.Constraints;
-import com.bjrushworth29.enums.EInventoryLoadout;
+import com.bjrushworth29.enums.DefaultWorld;
+import com.bjrushworth29.enums.DefaultInventoryLoadout;
 import com.bjrushworth29.enums.GameType;
 import com.bjrushworth29.games.util.Game;
 import com.bjrushworth29.games.util.GameQueue;
@@ -75,7 +76,7 @@ public class GameManager {
 		players.add(player);
 
 		player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "You have entered the queue!");
-		InventoryLoadoutManager.giveInventoryLoadout(player, InventoryLoadoutManager.getDefaultLoadout(EInventoryLoadout.HUB_QUEUED));
+		InventoryLoadoutManager.giveInventoryLoadout(player, InventoryLoadoutManager.getDefaultLoadout(DefaultInventoryLoadout.HUB_QUEUED));
 
 		if (players.size() >= game.getMaxPlayers()) {
 			startGame(game, players);
@@ -94,7 +95,7 @@ public class GameManager {
 			return;
 		}
 
-		InventoryLoadoutManager.giveInventoryLoadout(player, InventoryLoadoutManager.getDefaultLoadout(EInventoryLoadout.HUB));
+		InventoryLoadoutManager.giveInventoryLoadout(player, InventoryLoadoutManager.getDefaultLoadout(DefaultInventoryLoadout.HUB));
 
 		GameQueue queue = QUEUES.get(game);
 		ArrayList<Player> players = queue.getPlayers();
@@ -128,12 +129,12 @@ public class GameManager {
 
 	private static void createGameWorlds() {
 		GAME_WORLDS.add(new GameWorld(
-				"test_game",
+				DefaultWorld.TEST_GAME.toString(),
 				0,
 				0,
 				List.of(GameType.TEST),
 				List.of(new TeamObject<>(
-						new Location(WorldManager.getWorld("test_game"), 0, 64, 0), null, false, true)
+						new Location(WorldManager.getWorld(DefaultWorld.TEST_GAME), 0, 64, 0), null, false, true)
 				),
 				null,
 				null

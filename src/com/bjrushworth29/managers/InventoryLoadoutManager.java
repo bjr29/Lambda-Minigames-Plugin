@@ -1,6 +1,6 @@
 package com.bjrushworth29.managers;
 
-import com.bjrushworth29.enums.EInventoryLoadout;
+import com.bjrushworth29.enums.DefaultInventoryLoadout;
 import com.bjrushworth29.utils.Debug;
 import com.bjrushworth29.utils.InventoryLoadout;
 import org.bukkit.entity.Player;
@@ -22,19 +22,19 @@ public class InventoryLoadoutManager {
 		ItemStack[] hubHotbar = hotbarTemplate.clone();
 		hubHotbar[0] = ItemManager.getItem("selectGame");
 
-		LOADOUTS.put(EInventoryLoadout.HUB.toString(), new InventoryLoadout(hubHotbar));
+		LOADOUTS.put(DefaultInventoryLoadout.HUB.toString(), new InventoryLoadout(hubHotbar));
 
 		// Hub (Queued)
 		ItemStack[] hubQueuedHotbar = hotbarTemplate.clone();
 		hubQueuedHotbar[0] = ItemManager.getItem("selectGame");
 		hubQueuedHotbar[1] = ItemManager.getItem("leaveQueue");
 
-		LOADOUTS.put(EInventoryLoadout.HUB_QUEUED.toString(), new InventoryLoadout(hubQueuedHotbar));
+		LOADOUTS.put(DefaultInventoryLoadout.HUB_QUEUED.toString(), new InventoryLoadout(hubQueuedHotbar));
 
 		Debug.info("Initialised inventory loadouts");
 	}
 
-	public static InventoryLoadout getDefaultLoadout(EInventoryLoadout inventoryLoadout) {
+	public static InventoryLoadout getDefaultLoadout(DefaultInventoryLoadout inventoryLoadout) {
 		return getDefaultLoadout(inventoryLoadout.toString());
 	}
 

@@ -1,6 +1,6 @@
 package com.bjrushworth29.events;
 
-import com.bjrushworth29.enums.EInventoryLoadout;
+import com.bjrushworth29.enums.DefaultInventoryLoadout;
 import com.bjrushworth29.games.util.Game;
 import com.bjrushworth29.managers.GameManager;
 import com.bjrushworth29.managers.InventoryLoadoutManager;
@@ -26,7 +26,7 @@ public class PlayerChangedWorld implements Listener {
 				game.removePlayer(player);
 			}
 
-			InventoryLoadoutManager.giveInventoryLoadout(player, InventoryLoadoutManager.getDefaultLoadout(EInventoryLoadout.HUB));
+			InventoryLoadoutManager.giveInventoryLoadout(player, InventoryLoadoutManager.getDefaultLoadout(DefaultInventoryLoadout.HUB));
 			PlayerConstraintManager.applyConstraints(player, "hub");
 		}
 	}

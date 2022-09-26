@@ -1,7 +1,7 @@
 package com.bjrushworth29.games.util;
 
 import com.bjrushworth29.enums.Constraints;
-import com.bjrushworth29.enums.EWorld;
+import com.bjrushworth29.enums.DefaultWorld;
 import com.bjrushworth29.enums.GameState;
 import com.bjrushworth29.enums.GameType;
 import com.bjrushworth29.managers.GameManager;
@@ -137,7 +137,7 @@ public class Game {
 
 	private void cancel() {
 		for (Player player : getPlayers()) {
-			WorldManager.teleportToSpawn(player, WorldManager.getWorld(EWorld.HUB));
+			WorldManager.teleportToSpawn(player, WorldManager.getWorld(DefaultWorld.HUB));
 
 			player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "GAME CANCELLED: Not enough players to start!");
 		}
@@ -197,7 +197,7 @@ public class Game {
 					null,
 					() -> {
 						if (getPlayers().contains(player)) {
-							WorldManager.teleportToSpawn(player, WorldManager.getWorld(EWorld.HUB));
+							WorldManager.teleportToSpawn(player, WorldManager.getWorld(DefaultWorld.HUB));
 						}
 					}
 			).start();

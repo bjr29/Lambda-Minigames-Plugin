@@ -1,12 +1,12 @@
 package com.bjrushworth29.enums;
 
-public enum EInventoryLoadout {
+public enum DefaultInventoryLoadout {
 	HUB("hub"),
 	HUB_QUEUED("hubQueued");
 
 	private final String value;
 
-	EInventoryLoadout(String value) {
+	DefaultInventoryLoadout(String value) {
 		this.value = value;
 	}
 

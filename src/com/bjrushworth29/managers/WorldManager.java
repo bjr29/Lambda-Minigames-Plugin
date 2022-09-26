@@ -1,6 +1,6 @@
 package com.bjrushworth29.managers;
 
-import com.bjrushworth29.enums.EWorld;
+import com.bjrushworth29.enums.DefaultWorld;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class WorldManager {
-	public static World getWorld(EWorld world) {
+	public static World getWorld(DefaultWorld world) {
 		return getWorld(world.toString());
 	}
 
