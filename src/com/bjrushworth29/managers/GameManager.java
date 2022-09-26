@@ -1,6 +1,7 @@
 package com.bjrushworth29.managers;
 
 import com.bjrushworth29.enums.Constraints;
+import com.bjrushworth29.enums.EInventoryLoadout;
 import com.bjrushworth29.enums.GameType;
 import com.bjrushworth29.games.util.Game;
 import com.bjrushworth29.games.util.GameQueue;
@@ -74,6 +75,7 @@ public class GameManager {
 		players.add(player);
 
 		player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "You have entered the queue!");
+		InventoryLoadoutManager.giveInventoryLoadout(player, InventoryLoadoutManager.getDefaultLoadout(EInventoryLoadout.HUB_QUEUED));
 
 		if (players.size() >= game.getMaxPlayers()) {
 			startGame(game, players);
@@ -92,7 +94,7 @@ public class GameManager {
 			return;
 		}
 
-		InventoryLoadoutManager.giveInventoryLoadout(player, InventoryLoadoutManager.getDefaultLoadout("hub"));
+		InventoryLoadoutManager.giveInventoryLoadout(player, InventoryLoadoutManager.getDefaultLoadout(EInventoryLoadout.HUB));
 
 		GameQueue queue = QUEUES.get(game);
 		ArrayList<Player> players = queue.getPlayers();

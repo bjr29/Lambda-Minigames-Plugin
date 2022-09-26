@@ -1,5 +1,6 @@
 package com.bjrushworth29.events;
 
+import com.bjrushworth29.enums.EInventoryLoadout;
 import com.bjrushworth29.managers.InventoryLoadoutManager;
 import com.bjrushworth29.managers.PlayerConstraintManager;
 import com.bjrushworth29.managers.WorldManager;
@@ -18,7 +19,7 @@ public class PlayerJoinedServer implements Listener {
 
 		WorldManager.teleportToSpawn(player, WorldManager.getWorld("hub"));
 
-		InventoryLoadoutManager.giveInventoryLoadout(player, InventoryLoadoutManager.getDefaultLoadout("hub"));
+		InventoryLoadoutManager.giveInventoryLoadout(player, InventoryLoadoutManager.getDefaultLoadout(EInventoryLoadout.HUB));
 		PlayerConstraintManager.applyConstraints(player, "hub");
 
 		player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "Welcome!");

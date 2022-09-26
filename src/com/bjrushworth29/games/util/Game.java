@@ -1,13 +1,13 @@
 package com.bjrushworth29.games.util;
 
 import com.bjrushworth29.enums.Constraints;
+import com.bjrushworth29.enums.EWorld;
 import com.bjrushworth29.enums.GameState;
 import com.bjrushworth29.enums.GameType;
 import com.bjrushworth29.managers.GameManager;
 import com.bjrushworth29.managers.PlayerConstraintManager;
 import com.bjrushworth29.managers.WorldManager;
 import com.bjrushworth29.utils.*;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.World;
@@ -130,14 +130,14 @@ public class Game {
 			handleDeathOrLeave(player, true);
 		}
 
-		if (getPlayers().size() == 0 || getPlayers().size() - cancelledPlayers < minPlayers) {
+		if (getPlayers().size() == 0 || (gameState == GameState.WAITING && getPlayers().size() - cancelledPlayers < minPlayers)) {
 			cancel();
 		}
 	}
 
 	private void cancel() {
 		for (Player player : getPlayers()) {
-			WorldManager.teleportToSpawn(player, Bukkit.getWorld("hub"));
+			WorldManager.teleportToSpawn(player, WorldManager.getWorld(EWorld.HUB));
 
 			player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "GAME CANCELLED: Not enough players to start!");
 		}
@@ -197,7 +197,7 @@ public class Game {
 					null,
 					() -> {
 						if (getPlayers().contains(player)) {
-							WorldManager.teleportToSpawn(player, Bukkit.getWorld("hub"));
+							WorldManager.teleportToSpawn(player, WorldManager.getWorld(EWorld.HUB));
 						}
 					}
 			).start();

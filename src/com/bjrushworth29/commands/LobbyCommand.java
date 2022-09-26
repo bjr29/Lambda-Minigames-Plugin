@@ -1,5 +1,6 @@
 package com.bjrushworth29.commands;
 
+import com.bjrushworth29.enums.EWorld;
 import com.bjrushworth29.managers.WorldManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -16,7 +17,7 @@ public class LobbyCommand implements CommandExecutor {
 			return true;
 		}
 
-		WorldManager.teleportToSpawn(player, WorldManager.getWorld("hub"));
+		WorldManager.teleportToSpawn(player, WorldManager.getWorld(EWorld.HUB));
 
 		return true;
 	}
