@@ -35,6 +35,17 @@ public class PlayerConstraintManager {
 				false
 		));
 
+		CONSTRAINTS.put(Constraints.SPECTATOR.toString(), new PlayerConstraints(
+				false,
+				GameMode.SPECTATOR,
+				false,
+				false,
+				false,
+				false,
+				false,
+				false
+		));
+
 		CONSTRAINTS.put(Constraints.PVP_DEFAULT.toString(), new PlayerConstraints(
 				true,
 				GameMode.ADVENTURE,

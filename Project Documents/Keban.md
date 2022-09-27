@@ -16,7 +16,6 @@ kanban-plugin: basic
 ## Todo
 
 - [ ] Duels game mode<br><br>#feature #gamemode #2
-- [ ] Spectator player constraint<br><br>#feature #3
 - [ ] Lobby map<br><br>#building #3
 
 
@@ -41,6 +40,7 @@ kanban-plugin: basic
 
 **Complete**
 - [x] Enums for names in managers<br><br>#refactor #4
+- [x] Spectator player constraint<br><br>#feature #3
 
 
 

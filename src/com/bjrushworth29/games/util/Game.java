@@ -9,7 +9,6 @@ import com.bjrushworth29.managers.PlayerConstraintManager;
 import com.bjrushworth29.managers.WorldManager;
 import com.bjrushworth29.utils.*;
 import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -256,7 +255,7 @@ public class Game {
 					break;
 				}
 
-				player.setGameMode(GameMode.SPECTATOR);
+				PlayerConstraintManager.applyConstraints(player, Constraints.SPECTATOR);
 
 				break;
 
@@ -266,7 +265,7 @@ public class Game {
 
 			case LAST_STANDING:
 			case SUMO:
-				player.setGameMode(GameMode.SPECTATOR);
+				PlayerConstraintManager.applyConstraints(player, Constraints.SPECTATOR);
 
 				if (getPlayers().size() == 1) {
 					end(getPlayers().get(0));
@@ -275,7 +274,7 @@ public class Game {
 				break;
 
 			case TEST:
-				player.setGameMode(GameMode.SPECTATOR);
+				PlayerConstraintManager.applyConstraints(player, Constraints.SPECTATOR);
 
 				end(player);
 
@@ -283,7 +282,7 @@ public class Game {
 		}
 
 		if (data.getLives() == 0) {
-			player.setGameMode(GameMode.SPECTATOR);
+			PlayerConstraintManager.applyConstraints(player, Constraints.SPECTATOR);
 		}
 	}
 
