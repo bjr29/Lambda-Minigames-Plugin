@@ -22,12 +22,12 @@ kanban-plugin: basic
 
 ## In Progress
 
-- [ ] Prevent glitchy movement while waiting to start game<br><br>#bug #1
 - [ ] Sumo game mode<br>- [ ] Basic map<br><br>#feature #gamemode #building #2
 
 
 ## Testing
 
+- [ ] Prevent glitchy movement while waiting to start game<br><br>#bug #1
 - [ ] Kill y level per map<br><br>#feature #1
 - [ ] PVP<br>- [ ] Within lobby<br>- [ ] Inside game<br>- [ ] Before/ after game<br>- [ ] Inside game with PVP disabled<br><br>#feature #1
 - [ ] Leave queue<br><br>#feature #1
