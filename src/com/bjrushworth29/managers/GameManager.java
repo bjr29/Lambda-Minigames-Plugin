@@ -137,7 +137,8 @@ public class GameManager {
 						new Location(WorldManager.getWorld(DefaultWorld.TEST_GAME), 0, 64, 0), null, false, true)
 				),
 				null,
-				null
+				null,
+				-5
 		));
 	}
 

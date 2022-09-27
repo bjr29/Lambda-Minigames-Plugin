@@ -1,5 +1,7 @@
 package com.bjrushworth29.events;
 
+import com.bjrushworth29.games.util.Game;
+import com.bjrushworth29.managers.GameManager;
 import com.bjrushworth29.managers.PlayerConstraintManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,6 +15,13 @@ public class PlayerMoved implements Listener {
 
 		if (!PlayerConstraintManager.getAppliedConstraints(player).canMove() && event.getFrom().getY() != event.getTo().getY()) {
 			event.setCancelled(true);
+			return;
+		}
+
+		Game game = GameManager.getPlayerGame(player);
+
+		if (game != null) {
+			game.handleMovement(event);
 		}
 	}
 }

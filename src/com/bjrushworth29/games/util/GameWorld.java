@@ -10,7 +10,7 @@ import java.util.List;
 
 public record GameWorld(String name, int minTeams, int maxTeams, List<GameType> gameTypes,
 						List<TeamObject<Location>> spawnPoints, List<TeamObject<Location>> bedLocations,
-						List<TeamObject<Location>> pointPitLocations) {
+						List<TeamObject<Location>> pointPitLocations, int killBelow) {
 
 	public World createSessionWorld() {
 		String session_world = String.format("%d_active_game_%s", System.currentTimeMillis(), name);

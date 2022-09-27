@@ -12,6 +12,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
@@ -283,6 +284,14 @@ public class Game {
 
 		if (data.getLives() == 0) {
 			player.setGameMode(GameMode.SPECTATOR);
+		}
+	}
+
+	public void handleMovement(PlayerMoveEvent event) {
+		Player player = event.getPlayer();
+
+		if (event.getTo().getY() <= worldSettings.killBelow()) {
+			handleDeathOrLeave(player, false);
 		}
 	}
 
