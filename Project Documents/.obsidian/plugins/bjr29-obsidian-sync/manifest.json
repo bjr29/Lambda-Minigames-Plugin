@@ -1,0 +1,10 @@
+{
+	"id": "bjr29-obsidian-sync",
+	"name": "bjr29's Obsidian Sync",
+	"version": "0.1 ALPHA",
+	"minAppVersion": "0.12.0",
+	"description": "This is a minimal setup plugin for syncing your obsidian vaults across devices.",
+	"author": "bjr29",
+	"authorUrl": "https://obsidian.md",
+	"isDesktopOnly": false
+}

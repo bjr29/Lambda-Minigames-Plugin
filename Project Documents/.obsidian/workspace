@@ -1,0 +1,128 @@
+{
+  "main": {
+    "id": "1c361ef73af66e92",
+    "type": "split",
+    "children": [
+      {
+        "id": "ce23d3d09a5870c8",
+        "type": "leaf",
+        "state": {
+          "type": "kanban",
+          "state": {
+            "file": "Keban.md"
+          }
+        }
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "f819cae0460d36ae",
+    "type": "split",
+    "children": [
+      {
+        "id": "4259ad553439b992",
+        "type": "tabs",
+        "dimension": 57.11402623612513,
+        "children": [
+          {
+            "id": "060a7296c4dec23d",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {}
+            }
+          },
+          {
+            "id": "8f9a5c170e424385",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": "71526e9c099cd1aa",
+        "type": "tabs",
+        "dimension": 42.88597376387487,
+        "children": [
+          {
+            "id": "4f5e05ef4fd8c298",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Keban.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 297
+  },
+  "right": {
+    "id": "26e38409fa8badb2",
+    "type": "split",
+    "children": [
+      {
+        "id": "697f060d156b6cc2",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "d789494ef1a53afe",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Keban.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": true,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "d3295496cd930381",
+            "type": "leaf",
+            "state": {
+              "type": "advanced-tables-toolbar",
+              "state": {}
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "horizontal",
+    "width": 173,
+    "collapsed": true
+  },
+  "active": "ce23d3d09a5870c8",
+  "lastOpenFiles": [
+    "Excalidraw/Drawing 2022-09-25 15.28.58.excalidraw.md",
+    "Lambda Minigames Server/LMS Project Management.md",
+    "Untitled Programming Language/Syntax.md",
+    "Lambda Minigames Minecraft Server/Maps.md",
+    "Lambda Minigames Minecraft Server/Creating a Minigame.md",
+    "Lambda Minigames Minecraft Server/Concept.md",
+    "Lambda Minigames Minecraft Server/Armorstand Name Prefixes.md",
+    "Untitled Programming Language/Concept.md",
+    "App Builder App/Concept.md",
+    "App Builder App/Drawing 2022-06-29 11.12.21.excalidraw.md"
+  ]
+}
