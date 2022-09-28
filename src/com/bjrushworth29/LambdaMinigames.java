@@ -1,8 +1,10 @@
 package com.bjrushworth29;
 
 import com.bjrushworth29.commands.EndGameCommand;
+import com.bjrushworth29.commands.LeaveQueueCommand;
 import com.bjrushworth29.commands.LobbyCommand;
 import com.bjrushworth29.events.*;
+import com.bjrushworth29.items.LeaveQueueItem;
 import com.bjrushworth29.items.SelectGameItem;
 import com.bjrushworth29.managers.GameManager;
 import com.bjrushworth29.screens.SelectGameScreen;
@@ -38,6 +40,7 @@ public class LambdaMinigames extends JavaPlugin {
 
 	private void registerCommands() {
 		getCommand("endgame").setExecutor(new EndGameCommand());
+		getCommand("leaveQueue").setExecutor(new LeaveQueueCommand());
 		getCommand("lobby").setExecutor(new LobbyCommand());
 	}
 
@@ -53,6 +56,7 @@ public class LambdaMinigames extends JavaPlugin {
 
 	private void initItemEvents() {
 		initEventClass(new SelectGameItem());
+		initEventClass(new LeaveQueueItem());
 	}
 
 	private void initScreenEvents() {

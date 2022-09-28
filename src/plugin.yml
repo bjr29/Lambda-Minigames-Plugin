@@ -12,6 +12,8 @@ commands:
     permission-message: "Insufficient privileges to use command!"
     aliases:
       - end
+  leaveQueue:
+    usage: /<command>
   lobby:
     usage: /<command>
     aliases:

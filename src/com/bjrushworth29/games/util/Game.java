@@ -272,13 +272,6 @@ public class Game {
 				}
 
 				break;
-
-			case TEST:
-				PlayerConstraintManager.applyConstraints(player, Constraints.SPECTATOR);
-
-				end(player);
-
-				break;
 		}
 
 		if (data.getLives() == 0) {

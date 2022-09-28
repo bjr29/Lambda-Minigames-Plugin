@@ -13,10 +13,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class GameManager {
 	private static final HashMap<String, Game> GAMES = new HashMap<>();
@@ -58,8 +55,8 @@ public class GameManager {
 	}
 
 	public static void enterQueue(Player player, String gameName) {
-		if (getPlayerGame(player) != null) {
-			player.sendMessage(ChatColor.RED + "Can't enter queue as you're already in a queue or game");
+		if (getPlayerGame(player) != null || getPlayerGameQueue(player) != null) {
+			player.sendMessage(ChatColor.RED + "Can't enter queue as you're already in a queue or game!");
 
 			return;
 		}
@@ -67,7 +64,7 @@ public class GameManager {
 		Game game = GAMES.get(gameName);
 
 		if (!QUEUES.containsKey(game)) {
-			QUEUES.put(game, new GameQueue(game.getMaxPlayers() * 2, game.getGameType()));
+			QUEUES.put(game, new GameQueue(game.getMaxPlayers() * 2));
 		}
 
 		GameQueue gameQueue = QUEUES.get(game);
@@ -81,36 +78,59 @@ public class GameManager {
 		if (players.size() >= game.getMaxPlayers()) {
 			startGame(game, players);
 
-		} else if (!gameQueue.countdown.isRunning() && players.size() >= game.getMinPlayers()) {
-			gameQueue.countdown.completed = () -> startGame(game, players);
+		} else if (!gameQueue.getCountdown().isRunning() && players.size() >= game.getMinPlayers()) {
+			gameQueue.getCountdown().setCompleted(() -> startGame(game, players));
 		}
 	}
 
 	public static void leaveQueue(Player player) {
-		Game game = getPlayerGame(player);
+		GameQueue queue = getPlayerGameQueue(player);
 
-		if (game == null) {
+		if (queue == null) {
 			Debug.warn("Player '%s' attempted to leave queue whilst not in a queue!", player.getName());
 
 			return;
 		}
 
 		InventoryLoadoutManager.giveInventoryLoadout(player, InventoryLoadoutManager.getDefaultLoadout(DefaultInventoryLoadout.HUB));
+		player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "You have left the queue!");
 
-		GameQueue queue = QUEUES.get(game);
 		ArrayList<Player> players = queue.getPlayers();
 
 		players.remove(player);
 
-		if (players.size() < game.getMinPlayers()) {
-			queue.countdown.restart();
+		Game game = getQueueGame(queue);
+		assert game != null;
+
+		if (players.size() < game.getMinPlayers() && queue.getCountdown().isRunning()) {
+			queue.getCountdown().restart();
 		}
+	}
+
+	private static Game getQueueGame(GameQueue queue) {
+		for (Map.Entry<Game, GameQueue> entry : QUEUES.entrySet()) {
+			if (queue == entry.getValue()) {
+				return entry.getKey();
+			}
+		}
+
+		return null;
 	}
 
 	public static Game getPlayerGame(Player player) {
 		for (Game game : ACTIVE_GAMES) {
 			if (game.containsPlayer(player)) {
 				return game;
+			}
+		}
+
+		return null;
+	}
+
+	public static GameQueue getPlayerGameQueue(Player player) {
+		for (GameQueue queue : QUEUES.values()) {
+			if (queue.getPlayers().contains(player)) {
+				return queue;
 			}
 		}
 
@@ -129,31 +149,20 @@ public class GameManager {
 
 	private static void createGameWorlds() {
 		GAME_WORLDS.add(new GameWorld(
-				DefaultWorld.TEST_GAME.toString(),
+				DefaultWorld.SUMO.toString(),
 				0,
 				0,
-				List.of(GameType.TEST),
+				List.of(GameType.SUMO),
 				List.of(new TeamObject<>(
-						new Location(WorldManager.getWorld(DefaultWorld.TEST_GAME), 0, 64, 0), null, false, true)
+						new Location(WorldManager.getWorld(DefaultWorld.SUMO), 0, 64, 0), null, false, true)
 				),
 				null,
 				null,
-				-5
+				90
 		));
 	}
 
 	private static void createGames() {
-		GAMES.put("testGame", new Game(
-				GameType.TEST,
-				Constraints.PVP_DEFAULT,
-				1,
-				1,
-				false,
-				false,
-				1,
-				1
-		));
-
 		GAMES.put("sumo", new Game(
 				GameType.SUMO,
 				Constraints.PVP_SUMO,

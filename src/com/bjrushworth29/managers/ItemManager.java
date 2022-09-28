@@ -16,7 +16,6 @@ public class ItemManager {
 		ITEMS.put("selectGame", create(Material.COMPASS, ChatColor.BLUE + "Select Game"));
 		ITEMS.put("leaveQueue", create(Material.REDSTONE, ChatColor.RED + "Leave Queue"));
 
-		ITEMS.put("screenTestGame", create(Material.DIAMOND_SWORD, ChatColor.BLUE + "Test Game"));
 		ITEMS.put("screenSumoGame", create(Material.WOOL, ChatColor.BLUE + "Sumo"));
 
 		Debug.info("Initialised items");

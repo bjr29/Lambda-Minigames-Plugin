@@ -1,11 +1,11 @@
 package com.bjrushworth29.enums;
 
-public enum ScreenItem {
-	SUMO_GAME("screenSumoGame");
+public enum GameName {
+	SUMO("sumo");
 
 	private final String value;
 
-	ScreenItem(String value) {
+	GameName(String value) {
 		this.value = value;
 	}
 

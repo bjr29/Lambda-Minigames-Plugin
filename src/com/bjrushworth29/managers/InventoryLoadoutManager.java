@@ -26,8 +26,7 @@ public class InventoryLoadoutManager {
 
 		// Hub (Queued)
 		ItemStack[] hubQueuedHotbar = hotbarTemplate.clone();
-		hubQueuedHotbar[0] = ItemManager.getItem("selectGame");
-		hubQueuedHotbar[1] = ItemManager.getItem("leaveQueue");
+		hubQueuedHotbar[0] = ItemManager.getItem("leaveQueue");
 
 		LOADOUTS.put(DefaultInventoryLoadout.HUB_QUEUED.toString(), new InventoryLoadout(hubQueuedHotbar));
 

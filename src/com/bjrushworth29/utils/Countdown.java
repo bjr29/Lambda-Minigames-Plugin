@@ -12,20 +12,20 @@ public class Countdown implements Runnable {
 	private int seconds;
 
 	public Consumer<Countdown> tick;
-	public Runnable completed;
+	private Runnable completed;
 
 	public Countdown(int seconds, Consumer<Countdown> tick, Runnable completed) {
 		this.totalSeconds = seconds;
 		this.seconds = seconds;
 		this.tick = tick;
-		this.completed = completed;
+		this.setCompleted(completed);
 	}
 
 	@Deprecated
 	@Override
 	public void run() {
 		if (seconds <= 0) {
-			completed.run();
+			getCompleted().run();
 
 			if (id != null) {
 				Bukkit.getScheduler().cancelTask(id);
@@ -46,7 +46,12 @@ public class Countdown implements Runnable {
 	}
 
 	public boolean isRunning() {
-		return Bukkit.getScheduler().isCurrentlyRunning(id);
+		try {
+			return Bukkit.getScheduler().isCurrentlyRunning(id);
+
+		} catch (Exception ignored) {
+			return false;
+		}
 	}
 
 	public void start() {
@@ -60,5 +65,13 @@ public class Countdown implements Runnable {
 
 	public void stop() {
 		Bukkit.getScheduler().cancelTask(id);
+	}
+
+	public Runnable getCompleted() {
+		return completed;
+	}
+
+	public void setCompleted(Runnable completed) {
+		this.completed = completed;
 	}
 }

@@ -5,6 +5,5 @@ public enum GameType {
 	LAST_STANDING,
 	BED_LAST_STANDING,
 	SUMO,
-	TEST,
 	PIT
 }

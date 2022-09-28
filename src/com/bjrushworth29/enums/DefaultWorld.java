@@ -1,8 +1,8 @@
 package com.bjrushworth29.enums;
 
 public enum DefaultWorld {
-	HUB("hub"),
-	TEST_GAME("test_game");
+	HUB("world_hub"),
+	SUMO("world_sumo");
 
 	private final String value;
 

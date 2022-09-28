@@ -15,8 +15,7 @@ public class ScreenManager {
 		ItemStack[] content;
 
 		content = new ItemStack[InventoryRows.THREE.getValue()];
-		content[InventoryRows.ONE.getValue() + 1] = ItemManager.getItem("screenTestGame");
-		content[InventoryRows.ONE.getValue() + 2] = ItemManager.getItem("screenSumoGame");
+		content[InventoryRows.ONE.getValue() + 1] = ItemManager.getItem("screenSumoGame");
 
 		SCREENS.put("selectGame", create(content));
 

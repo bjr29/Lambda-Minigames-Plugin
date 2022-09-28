@@ -1,5 +1,6 @@
 package com.bjrushworth29.screens;
 
+import com.bjrushworth29.enums.GameName;
 import com.bjrushworth29.managers.GameManager;
 import com.bjrushworth29.managers.ItemManager;
 import com.bjrushworth29.managers.ScreenManager;
@@ -17,17 +18,17 @@ public class SelectGameScreen implements Listener {
 		Inventory inventory = event.getClickedInventory();
 		ItemStack clicked = event.getCurrentItem();
 
-		if (clicked.getItemMeta() == null || !inventory.equals(ScreenManager.getDefaultScreen("selectGame"))) {
+		if (clicked == null || clicked.getItemMeta() == null || !inventory.equals(ScreenManager.getDefaultScreen("selectGame"))) {
 			return;
 		}
 
 		event.setCancelled(true);
 		player.closeInventory();
 
-		ItemStack testGameButton = ItemManager.getItem("screenTestGame");
+		ItemStack sumoGameButton = ItemManager.getItem("screenSumoGame");
 
-		if (ItemManager.equalMeta(clicked, testGameButton)) {
-			GameManager.enterQueue(player, "testGame");
+		if (ItemManager.equalMeta(clicked, sumoGameButton)) {
+			GameManager.enterQueue(player, GameName.SUMO.toString());
 		}
 	}
 }
