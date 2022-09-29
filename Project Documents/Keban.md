@@ -6,6 +6,8 @@ kanban-plugin: basic
 
 ## Back Burner
 
+- [ ] Duels game mode<br><br>#feature #gamemode #2
+- [ ] Lobby map<br><br>#building #3
 - [ ] Team system<br><br>#feature #3
 - [ ] Bed breaking system<br><br>#feature #2
 - [ ] Map no build/ break zones<br><br>#feature #2
@@ -16,13 +18,10 @@ kanban-plugin: basic
 
 ## Todo
 
-- [ ] Duels game mode<br><br>#feature #gamemode #2
-- [ ] Lobby map<br><br>#building #3
 
 
 ## In Progress
 
-- [ ] Prevent items from being dropped<br><br>#bug #1
 
 
 ## Testing
@@ -30,6 +29,7 @@ kanban-plugin: basic
 - [ ] Prevent glitchy movement while waiting to start game<br><br>#bug #1
 - [ ] Kill y level per map<br><br>#feature #1
 - [ ] PVP<br>- [ ] Within lobby<br>- [ ] Inside game<br>- [ ] Before/ after game<br>- [ ] Inside game with PVP disabled<br><br>#feature #1
+- [ ] Prevent items from being dropped<br><br>#bug #1
 - [ ] Leave queue<br><br>#feature #1
 - [ ] Queuing System with multiple players<br>- [ ] When players stay<br>- [ ] When player a player leaves<br>- [ ] When all players leave<br><br>#feature #1
 - [ ] Leaving the game before it starts<br>- [ ] 2 players<br>- [ ] \>2 players<br><br>#feature #2
