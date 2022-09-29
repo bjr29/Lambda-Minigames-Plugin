@@ -10,6 +10,7 @@ import com.bjrushworth29.managers.WorldManager;
 import com.bjrushworth29.utils.*;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -105,7 +106,7 @@ public class Game {
 		players.put(player, playerGameData);
 
 		PlayerConstraintManager.applyConstraints(player, Constraints.WAITING);
-		WorldManager.teleportToSpawn(player, world);
+		player.teleport((Location) worldSettings.getSpawnPoints().get(0).getObject());
 
 		if (players.size() >= joiningPlayers - cancelledPlayers) {
 			start();

@@ -4,6 +4,7 @@ import com.bjrushworth29.games.util.Game;
 import com.bjrushworth29.managers.GameManager;
 import com.bjrushworth29.managers.PlayerConstraintManager;
 import com.bjrushworth29.utils.Debug;
+import com.bjrushworth29.utils.PlayerConstraints;
 import com.bjrushworth29.utils.PlayerGameData;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -55,9 +56,15 @@ public class PlayerDamaged implements Listener {
 		Player player = (Player) event.getEntity();
 		Player damager = (Player) event.getDamager();
 
-		if (!(PlayerConstraintManager.getAppliedConstraints(player).pvp() && PlayerConstraintManager.getAppliedConstraints(damager).pvp())) {
+		PlayerConstraints playerConstraints = PlayerConstraintManager.getAppliedConstraints(player);
+
+		if (!(playerConstraints.pvp() && PlayerConstraintManager.getAppliedConstraints(damager).pvp())) {
 			event.setCancelled(true);
 			return;
+		}
+
+		if (!playerConstraints.takesAnyDamage()) {
+			event.setDamage(0);
 		}
 
 		Game game = GameManager.getPlayerGame(player);
@@ -85,8 +92,11 @@ public class PlayerDamaged implements Listener {
 
 		if (player.getHealth() - event.getFinalDamage() <= 0) {
 			event.setCancelled(true);
-
 			game.handleDeathOrLeave(player, false);
+
+			return;
 		}
+
+		player.setVelocity(damager.getLocation().getDirection().normalize().multiply(0.5));
 	}
 }

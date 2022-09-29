@@ -23,13 +23,14 @@ kanban-plugin: basic
 
 ## In Progress
 
+- [ ] Refine knockback values<br><br>#adjustment #2
 
 
 ## Testing
 
 - [ ] Prevent glitchy movement while waiting to start game<br><br>#bug #1
-- [ ] PVP<br>- [x] Within lobby<br>- [ ] Inside game<br>- [ ] Before/ after game<br>- [ ] Inside game with PVP disabled<br><br>#feature #1
-- [ ] Leaving the game before it starts<br>- [ ] 2 players<br>- [ ] \>2 players<br><br>#feature #2
+- [ ] PVP<br>- [x] Within lobby<br>- [x] Inside game<br>- [x] Before/ after game<br>- [ ] Inside game with PVP disabled<br><br>#feature #1
+- [ ] Leaving the game before it starts<br>- [x] 2 players<br>- [ ] \>2 players<br><br>#feature #2
 - [ ] Player lives system<br><br>#feature #3
 - [ ] Preventing the player joining a different game while in a game<br><br>#bug #4
 - [ ] Sumo game mode<br>- [x] Basic map<br><br>#feature #gamemode #building #2
