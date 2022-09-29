@@ -21,12 +21,14 @@ public class PlayerConstraintManager {
 				true,
 				false,
 				false,
+				false,
 				false
 		));
 
 		CONSTRAINTS.put(Constraints.WAITING.toString(), new PlayerConstraints(
 				false,
 				GameMode.ADVENTURE,
+				false,
 				false,
 				false,
 				false,
@@ -43,6 +45,7 @@ public class PlayerConstraintManager {
 				false,
 				false,
 				false,
+				false,
 				false
 		));
 
@@ -54,6 +57,7 @@ public class PlayerConstraintManager {
 				true,
 				true,
 				false,
+				false,
 				false
 		));
 
@@ -61,6 +65,7 @@ public class PlayerConstraintManager {
 				true,
 				GameMode.ADVENTURE,
 				true,
+				false,
 				false,
 				false,
 				false,

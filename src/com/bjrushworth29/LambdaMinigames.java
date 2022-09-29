@@ -47,6 +47,7 @@ public class LambdaMinigames extends JavaPlugin {
 	private void initEvents() {
 		initEventClass(new PlayerChangedWorld());
 		initEventClass(new PlayerDamaged());
+		initEventClass(new PlayerDropItem());
 		initEventClass(new PlayerHungerChanged());
 		initEventClass(new PlayerInteracted());
 		initEventClass(new PlayerJoinedServer());

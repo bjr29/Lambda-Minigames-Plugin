@@ -11,6 +11,7 @@ public final class PlayerConstraints {
 	private final boolean takesAnyDamage;
 	private final boolean takesFallDamage;
 	private final boolean hungerEnabled;
+	private final boolean canDropItems;
 
 	public PlayerConstraints(
 			boolean pvp,
@@ -20,7 +21,8 @@ public final class PlayerConstraints {
 			boolean canInteractItems,
 			boolean takesAnyDamage,
 			boolean takesFallDamage,
-			boolean hungerEnabled
+			boolean hungerEnabled,
+			boolean canDropItems
 	) {
 		this.pvp = pvp;
 		this.gameMode = gameMode;
@@ -30,6 +32,7 @@ public final class PlayerConstraints {
 		this.takesAnyDamage = takesAnyDamage;
 		this.takesFallDamage = takesFallDamage;
 		this.hungerEnabled = hungerEnabled;
+		this.canDropItems = canDropItems;
 	}
 
 	public boolean pvp() {
@@ -62,5 +65,9 @@ public final class PlayerConstraints {
 
 	public boolean hungerEnabled() {
 		return hungerEnabled;
+	}
+
+	public boolean canDropItems() {
+		return canDropItems;
 	}
 }
