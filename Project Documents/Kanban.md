@@ -18,6 +18,7 @@ kanban-plugin: basic
 
 ## Todo
 
+- [ ] Spawn player on team side of map<br><br>#feature #1
 
 
 ## In Progress

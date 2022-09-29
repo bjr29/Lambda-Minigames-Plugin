@@ -26,6 +26,7 @@ public class WorldManager {
 	}
 
 	public static void teleportToSpawn(Player player, World world) {
+		player.setVelocity(new Vector());
 		player.teleport(getSpawnLocation(world));
 	}
 

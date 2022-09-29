@@ -9,7 +9,7 @@
         "state": {
           "type": "kanban",
           "state": {
-            "file": "Keban.md"
+            "file": "Kanban.md"
           }
         }
       }
@@ -61,7 +61,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Keban.md"
+                "file": "Kanban.md"
               }
             }
           }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Keban.md",
+                "file": "Kanban.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -112,7 +112,7 @@
     "width": 173,
     "collapsed": true
   },
-  "active": "ce23d3d09a5870c8",
+  "active": "060a7296c4dec23d",
   "lastOpenFiles": [
     "Excalidraw/Drawing 2022-09-25 15.28.58.excalidraw.md",
     "Lambda Minigames Server/LMS Project Management.md",
