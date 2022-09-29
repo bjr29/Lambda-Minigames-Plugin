@@ -27,11 +27,7 @@ kanban-plugin: basic
 ## Testing
 
 - [ ] Prevent glitchy movement while waiting to start game<br><br>#bug #1
-- [ ] Kill y level per map<br><br>#feature #1
-- [ ] PVP<br>- [ ] Within lobby<br>- [ ] Inside game<br>- [ ] Before/ after game<br>- [ ] Inside game with PVP disabled<br><br>#feature #1
-- [ ] Prevent items from being dropped<br><br>#bug #1
-- [ ] Leave queue<br><br>#feature #1
-- [ ] Queuing System with multiple players<br>- [ ] When players stay<br>- [ ] When player a player leaves<br>- [ ] When all players leave<br><br>#feature #1
+- [ ] PVP<br>- [x] Within lobby<br>- [ ] Inside game<br>- [ ] Before/ after game<br>- [ ] Inside game with PVP disabled<br><br>#feature #1
 - [ ] Leaving the game before it starts<br>- [ ] 2 players<br>- [ ] \>2 players<br><br>#feature #2
 - [ ] Player lives system<br><br>#feature #3
 - [ ] Preventing the player joining a different game while in a game<br><br>#bug #4
@@ -44,6 +40,10 @@ kanban-plugin: basic
 - [x] Enums for names in managers<br><br>#refactor #4
 - [x] Spectator player constraint<br><br>#feature #3
 - [x] Remove test game<br>- [x] World<br>- [x] Game type<br><br>#feature #3
+- [x] Kill y level per map<br><br>#feature #1
+- [x] Prevent items from being dropped<br><br>#bug #1
+- [x] Leave queue<br><br>#feature #1
+- [x] Queuing System with multiple players<br>- [x] When players stay<br>- [x] When player a player leaves<br>- [x] When all players leave<br><br>#feature #1
 
 
 

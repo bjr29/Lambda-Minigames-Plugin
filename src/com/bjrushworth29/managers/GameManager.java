@@ -44,6 +44,8 @@ public class GameManager {
 
 		createGameSession(newGame);
 
+		newGame.setJoiningPlayers(players.size());
+
 		for (Player player : players) {
 			newGame.addPlayer(player);
 		}

@@ -335,5 +335,9 @@ public class Game {
 	public int getSpawnProtectionDuration() {
 		return spawnProtectionDuration;
 	}
+
+	public void setJoiningPlayers(int joiningPlayers) {
+		this.joiningPlayers = joiningPlayers;
+	}
 }
 

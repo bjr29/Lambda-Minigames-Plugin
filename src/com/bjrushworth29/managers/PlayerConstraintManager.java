@@ -51,7 +51,7 @@ public class PlayerConstraintManager {
 
 		CONSTRAINTS.put(Constraints.PVP_DEFAULT.toString(), new PlayerConstraints(
 				true,
-				GameMode.ADVENTURE,
+				GameMode.SURVIVAL,
 				true,
 				true,
 				true,
@@ -63,7 +63,7 @@ public class PlayerConstraintManager {
 
 		CONSTRAINTS.put(Constraints.PVP_SUMO.toString(), new PlayerConstraints(
 				true,
-				GameMode.ADVENTURE,
+				GameMode.SURVIVAL,
 				true,
 				false,
 				false,
