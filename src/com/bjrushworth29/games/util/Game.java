@@ -9,6 +9,7 @@ import com.bjrushworth29.managers.PlayerConstraintManager;
 import com.bjrushworth29.managers.WorldManager;
 import com.bjrushworth29.utils.*;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -258,6 +259,8 @@ public class Game {
 
 				PlayerConstraintManager.applyConstraints(player, Constraints.SPECTATOR);
 
+				checkEndState();
+
 				break;
 
 			case PIT:
@@ -268,9 +271,7 @@ public class Game {
 			case SUMO:
 				PlayerConstraintManager.applyConstraints(player, Constraints.SPECTATOR);
 
-				if (getPlayers().size() == 1) {
-					end(getPlayers().get(0));
-				}
+				checkEndState();
 
 				break;
 		}
@@ -285,6 +286,12 @@ public class Game {
 
 		if (event.getTo().getY() <= worldSettings.getKillBelow()) {
 			handleDeathOrLeave(player, false);
+		}
+	}
+
+	private void checkEndState() {
+		if (getAlivePlayers().size() == 1) {
+			end(getAlivePlayers().get(0));
 		}
 	}
 
@@ -305,6 +312,18 @@ public class Game {
 				.keySet()
 				.stream()
 				.filter(player -> players.get(player).isInGame())
+				.collect(Collectors.toList());
+	}
+
+	public List<Player> getAlivePlayers() {
+		return players
+				.keySet()
+				.stream()
+				.filter(player -> {
+					PlayerGameData playerData = players.get(player);
+
+					return playerData.isInGame() && !playerData.isSpectator() && player.getGameMode() != GameMode.SPECTATOR;
+				})
 				.collect(Collectors.toList());
 	}
 
