@@ -14,9 +14,11 @@ import org.bukkit.event.entity.EntityDamageEvent;
 public class PlayerDamaged implements Listener {
 	@EventHandler
 	private void handler(EntityDamageEvent event) {
-		if (!(event.getEntity() instanceof Player player)) {
+		if (!(event.getEntity() instanceof Player)) {
 			return;
 		}
+
+		Player player = (Player) event.getEntity();
 
 		if (!PlayerConstraintManager.getAppliedConstraints(player).takesAnyDamage() ||
 			(!PlayerConstraintManager.getAppliedConstraints(player).takesFallDamage() && event.getCause() == EntityDamageEvent.DamageCause.FALL)
@@ -46,9 +48,12 @@ public class PlayerDamaged implements Listener {
 
 	@EventHandler
 	private void handler(EntityDamageByEntityEvent event) {
-		if (!(event.getEntity() instanceof Player player) || !(event.getDamager() instanceof Player damager)) {
+		if (!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Player)) {
 			return;
 		}
+
+		Player player = (Player) event.getEntity();
+		Player damager = (Player) event.getDamager();
 
 		if (!(PlayerConstraintManager.getAppliedConstraints(player).pvp() && PlayerConstraintManager.getAppliedConstraints(damager).pvp())) {
 			event.setCancelled(true);

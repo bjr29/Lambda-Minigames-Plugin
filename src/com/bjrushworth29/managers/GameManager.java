@@ -1,8 +1,8 @@
 package com.bjrushworth29.managers;
 
 import com.bjrushworth29.enums.Constraints;
-import com.bjrushworth29.enums.DefaultWorld;
 import com.bjrushworth29.enums.DefaultInventoryLoadout;
+import com.bjrushworth29.enums.DefaultWorld;
 import com.bjrushworth29.enums.GameType;
 import com.bjrushworth29.games.util.Game;
 import com.bjrushworth29.games.util.GameQueue;
@@ -32,9 +32,8 @@ public class GameManager {
 
 	public static void createGameSession(Game game) {
 		GameWorld[] selection = GAME_WORLDS.stream()
-				.filter(world -> world.gameTypes().contains(game.getGameType()))
-				.toList()
-				.toArray(new GameWorld[0]);
+				.filter(world -> world.getGameTypes().contains(game.getGameType()))
+				.toArray(GameWorld[]::new);
 		GameWorld gameWorldSettings = selection[RANDOM.nextInt(selection.length)];
 
 		game.init(gameWorldSettings);
@@ -152,8 +151,8 @@ public class GameManager {
 				DefaultWorld.SUMO.toString(),
 				0,
 				0,
-				List.of(GameType.SUMO),
-				List.of(new TeamObject<>(
+				Collections.singletonList(GameType.SUMO),
+				Collections.singletonList(new TeamObject<>(
 						new Location(WorldManager.getWorld(DefaultWorld.SUMO), 0, 64, 0), null, false, true)
 				),
 				null,

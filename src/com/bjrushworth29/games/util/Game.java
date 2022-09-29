@@ -17,6 +17,7 @@ import org.bukkit.scoreboard.Team;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Game {
 	private final GameType gameType;
@@ -282,7 +283,7 @@ public class Game {
 	public void handleMovement(PlayerMoveEvent event) {
 		Player player = event.getPlayer();
 
-		if (event.getTo().getY() <= worldSettings.killBelow()) {
+		if (event.getTo().getY() <= worldSettings.getKillBelow()) {
 			handleDeathOrLeave(player, false);
 		}
 	}
@@ -304,7 +305,7 @@ public class Game {
 				.keySet()
 				.stream()
 				.filter(player -> players.get(player).isInGame())
-				.toList();
+				.collect(Collectors.toList());
 	}
 
 	public boolean containsPlayer(Player player) {

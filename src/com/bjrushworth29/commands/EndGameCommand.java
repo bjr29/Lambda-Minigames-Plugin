@@ -11,12 +11,13 @@ import org.bukkit.entity.Player;
 public class EndGameCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String commandString, String[] args) {
-		if (!(sender instanceof Player player)) {
+		if (!(sender instanceof Player)) {
 			sender.sendMessage(ChatColor.RED + "Must be a player to use this command.");
 
 			return true;
 		}
 
+		Player player = (Player) sender;
 		Game game = GameManager.getPlayerGame(player);
 
 		if (game == null) {
