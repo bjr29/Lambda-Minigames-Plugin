@@ -106,7 +106,9 @@ public class Game {
 		players.put(player, playerGameData);
 
 		PlayerConstraintManager.applyConstraints(player, Constraints.WAITING);
-		player.teleport((Location) worldSettings.getSpawnPoints().get(0).getObject());
+
+		List<TeamObject<Location>> spawnPoints = worldSettings.getSpawnPoints();
+		player.teleport(spawnPoints.get(getPlayers().size() % spawnPoints.size()).getObject());
 
 		if (players.size() >= joiningPlayers - cancelledPlayers) {
 			start();

@@ -3,7 +3,7 @@ package com.bjrushworth29.games.util;
 import org.bukkit.scoreboard.Team;
 
 public final class TeamObject<T> {
-    private final Object object;
+    private final T object;
     private final Team team;
     private final boolean teamSpecific;
     private final boolean enabled;
@@ -15,7 +15,7 @@ public final class TeamObject<T> {
         this.enabled = enabled;
     }
 
-    public Object getObject() {
+    public T getObject() {
         return object;
     }
 

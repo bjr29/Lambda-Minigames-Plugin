@@ -18,22 +18,22 @@ kanban-plugin: basic
 
 ## Todo
 
-- [ ] Spawn player on team side of map<br><br>#feature #1
+- [ ] Prevent glitchy movement while waiting to start game<br><br>#bug #1
+- [ ] Prevent being stuck after dying<br><br>#bug #2
 
 
 ## In Progress
 
 - [ ] Refine knockback values<br><br>#adjustment #2
+- [ ] Correct combat system<br><br>#bug #1
+- [ ] Fix event cancelling on player being<br><br>#bug #1
 
 
 ## Testing
 
-- [ ] Prevent glitchy movement while waiting to start game<br><br>#bug #1
-- [ ] PVP<br>- [x] Within lobby<br>- [x] Inside game<br>- [x] Before/ after game<br>- [ ] Inside game with PVP disabled<br><br>#feature #1
+- [ ] Spawn player on team side of map<br><br>#feature #1
 - [ ] Leaving the game before it starts<br>- [x] 2 players<br>- [ ] \>2 players<br><br>#feature #2
-- [ ] Player lives system<br><br>#feature #3
 - [ ] Preventing the player joining a different game while in a game<br><br>#bug #4
-- [ ] Sumo game mode<br>- [x] Basic map<br><br>#feature #gamemode #building #2
 
 
 ## Complete
@@ -41,10 +41,13 @@ kanban-plugin: basic
 **Complete**
 - [x] Enums for names in managers<br><br>#refactor #4
 - [x] Spectator player constraint<br><br>#feature #3
+- [x] PVP<br>- [x] Within lobby<br>- [x] Inside game<br>- [x] Before/ after game<br>- [x] Inside game with PVP disabled<br><br>#feature #1
 - [x] Remove test game<br>- [x] World<br>- [x] Game type<br><br>#feature #3
 - [x] Kill y level per map<br><br>#feature #1
 - [x] Prevent items from being dropped<br><br>#bug #1
 - [x] Leave queue<br><br>#feature #1
+- [x] Player lives system<br><br>#feature #3
+- [x] Sumo game mode<br>- [x] Basic map<br><br>#feature #gamemode #building #2
 - [x] Queuing System with multiple players<br>- [x] When players stay<br>- [x] When player a player leaves<br>- [x] When all players leave<br><br>#feature #1
 
 

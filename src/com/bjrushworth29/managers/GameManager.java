@@ -153,9 +153,14 @@ public class GameManager {
 				DefaultWorld.SUMO.toString(),
 				0,
 				0,
-				Collections.singletonList(GameType.SUMO),
-				Collections.singletonList(new TeamObject<>(
-						new Location(WorldManager.getWorld(DefaultWorld.SUMO), 0, 100, 0), null, false, true)
+				Arrays.asList(GameType.SUMO),
+				Arrays.asList(
+						new TeamObject<>(
+							new Location(WorldManager.getWorld(DefaultWorld.SUMO), -6, 100, 0), null, false, true
+						),
+						new TeamObject<>(
+							new Location(WorldManager.getWorld(DefaultWorld.SUMO), 6, 100, 0), null, false, true
+						)
 				),
 				null,
 				null,
