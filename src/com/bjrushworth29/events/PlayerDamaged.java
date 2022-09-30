@@ -64,7 +64,8 @@ public class PlayerDamaged implements Listener {
 		}
 
 		if (!playerConstraints.takesAnyDamage()) {
-			event.setDamage(0);
+			event.setDamage(0d);
+			Debug.info("Disabled damage for '%s'", player);
 		}
 
 		Game game = GameManager.getPlayerGame(player);
@@ -97,6 +98,6 @@ public class PlayerDamaged implements Listener {
 			return;
 		}
 
-		player.setVelocity(damager.getLocation().getDirection().normalize().multiply(0.5));
+		player.setVelocity(damager.getLocation().getDirection().setY(1).normalize().multiply(0.5));
 	}
 }

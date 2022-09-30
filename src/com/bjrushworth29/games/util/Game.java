@@ -281,6 +281,7 @@ public class Game {
 
 		if (data.getLives() == 0) {
 			PlayerConstraintManager.applyConstraints(player, Constraints.SPECTATOR);
+			WorldManager.teleportToSpawn(player, world);
 		}
 	}
 

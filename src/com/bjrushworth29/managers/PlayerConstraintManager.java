@@ -40,7 +40,7 @@ public class PlayerConstraintManager {
 		CONSTRAINTS.put(Constraints.SPECTATOR.toString(), new PlayerConstraints(
 				false,
 				GameMode.SPECTATOR,
-				false,
+				true,
 				false,
 				false,
 				false,
