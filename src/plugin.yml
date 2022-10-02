@@ -6,14 +6,21 @@ author: bjr29
 prefix: LambdaM
 
 commands:
-  endgame:
+  changeKnockback:
+    usage: /<command> <forward> <upward>
+    permission: op
+    permission-message: "Insufficient privileges to use command!"
+
+  endGame:
     usage: /<command>
     permission: op
     permission-message: "Insufficient privileges to use command!"
     aliases:
       - end
+
   leaveQueue:
     usage: /<command>
+
   lobby:
     usage: /<command>
     aliases:

@@ -25,8 +25,6 @@ kanban-plugin: basic
 ## In Progress
 
 - [ ] Refine knockback values<br><br>#adjustment #2
-- [ ] Correct combat system<br><br>#bug #1
-- [ ] Fix event cancelling on player being<br><br>#bug #1
 
 
 ## Testing
@@ -41,6 +39,7 @@ kanban-plugin: basic
 **Complete**
 - [x] Enums for names in managers<br><br>#refactor #4
 - [x] Spectator player constraint<br><br>#feature #3
+- [x] Correct combat system<br><br>#bug #1
 - [x] PVP<br>- [x] Within lobby<br>- [x] Inside game<br>- [x] Before/ after game<br>- [x] Inside game with PVP disabled<br><br>#feature #1
 - [x] Remove test game<br>- [x] World<br>- [x] Game type<br><br>#feature #3
 - [x] Kill y level per map<br><br>#feature #1

@@ -1,6 +1,7 @@
 package com.bjrushworth29.managers;
 
 import com.bjrushworth29.enums.Constraints;
+import com.bjrushworth29.enums.DebugLevel;
 import com.bjrushworth29.utils.Debug;
 import com.bjrushworth29.utils.PlayerConstraints;
 import org.bukkit.GameMode;
@@ -73,7 +74,7 @@ public class PlayerConstraintManager {
 				false
 		));
 
-		Debug.info("Initialised constraints");
+		Debug.info(DebugLevel.MIN, "Initialised constraints");
 	}
 
 	public static PlayerConstraints getAppliedConstraints(Player player) {

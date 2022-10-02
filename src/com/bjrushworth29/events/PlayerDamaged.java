@@ -1,5 +1,6 @@
 package com.bjrushworth29.events;
 
+import com.bjrushworth29.commands.ChangeKnockbackCommand;
 import com.bjrushworth29.games.util.Game;
 import com.bjrushworth29.managers.GameManager;
 import com.bjrushworth29.managers.PlayerConstraintManager;
@@ -21,10 +22,14 @@ public class PlayerDamaged implements Listener {
 
 		Player player = (Player) event.getEntity();
 
-		if (!PlayerConstraintManager.getAppliedConstraints(player).takesAnyDamage() ||
-			(!PlayerConstraintManager.getAppliedConstraints(player).takesFallDamage() && event.getCause() == EntityDamageEvent.DamageCause.FALL)
-		) {
-			event.setCancelled(true);
+		PlayerConstraints appliedConstraints = PlayerConstraintManager.getAppliedConstraints(player);
+
+		if (!(event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && appliedConstraints.pvp())) {
+			if (!appliedConstraints.takesAnyDamage() ||
+					(!appliedConstraints.takesFallDamage() && event.getCause() == EntityDamageEvent.DamageCause.FALL)
+			) {
+				event.setCancelled(true);
+			}
 		}
 
 		Game game = GameManager.getPlayerGame(player);
@@ -64,7 +69,7 @@ public class PlayerDamaged implements Listener {
 		}
 
 		if (!playerConstraints.takesAnyDamage()) {
-			event.setDamage(0d);
+			player.setHealth(player.getMaxHealth());
 			Debug.info("Disabled damage for '%s'", player);
 		}
 
@@ -98,6 +103,12 @@ public class PlayerDamaged implements Listener {
 			return;
 		}
 
-		player.setVelocity(damager.getLocation().getDirection().setY(1).normalize().multiply(0.5));
+		player.setVelocity(
+				damager.getLocation()
+						.getDirection()
+						.normalize()
+						.setY(ChangeKnockbackCommand.knockbackUpward)
+						.multiply(ChangeKnockbackCommand.knockbackForward)
+		);
 	}
 }

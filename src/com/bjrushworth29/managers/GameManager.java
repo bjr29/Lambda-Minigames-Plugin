@@ -1,9 +1,6 @@
 package com.bjrushworth29.managers;
 
-import com.bjrushworth29.enums.Constraints;
-import com.bjrushworth29.enums.DefaultInventoryLoadout;
-import com.bjrushworth29.enums.DefaultWorld;
-import com.bjrushworth29.enums.GameType;
+import com.bjrushworth29.enums.*;
 import com.bjrushworth29.games.util.Game;
 import com.bjrushworth29.games.util.GameQueue;
 import com.bjrushworth29.games.util.GameWorld;
@@ -27,7 +24,7 @@ public class GameManager {
 		createGames();
 		createGameWorlds();
 
-		Debug.info("Initialised games");
+		Debug.info(DebugLevel.MIN, "Initialised games");
 	}
 
 	public static void createGameSession(Game game) {

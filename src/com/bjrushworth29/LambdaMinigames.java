@@ -1,5 +1,6 @@
 package com.bjrushworth29;
 
+import com.bjrushworth29.commands.ChangeKnockbackCommand;
 import com.bjrushworth29.commands.EndGameCommand;
 import com.bjrushworth29.commands.LeaveQueueCommand;
 import com.bjrushworth29.commands.LobbyCommand;
@@ -39,7 +40,8 @@ public class LambdaMinigames extends JavaPlugin {
 	}
 
 	private void registerCommands() {
-		getCommand("endgame").setExecutor(new EndGameCommand());
+		getCommand("changeKnockback").setExecutor(new ChangeKnockbackCommand());
+		getCommand("endGame").setExecutor(new EndGameCommand());
 		getCommand("leaveQueue").setExecutor(new LeaveQueueCommand());
 		getCommand("lobby").setExecutor(new LobbyCommand());
 	}

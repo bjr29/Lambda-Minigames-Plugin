@@ -1,5 +1,6 @@
 package com.bjrushworth29.managers;
 
+import com.bjrushworth29.enums.DebugLevel;
 import com.bjrushworth29.enums.InventoryRows;
 import com.bjrushworth29.utils.Debug;
 import org.bukkit.Bukkit;
@@ -19,7 +20,7 @@ public class ScreenManager {
 
 		SCREENS.put("selectGame", create(content));
 
-		Debug.info("Initialised inventory screens");
+		Debug.info(DebugLevel.MIN, "Initialised inventory screens");
 	}
 
 	public static Inventory create(ItemStack[] contents) {

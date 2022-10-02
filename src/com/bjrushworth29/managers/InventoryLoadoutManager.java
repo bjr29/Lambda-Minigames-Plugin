@@ -1,5 +1,6 @@
 package com.bjrushworth29.managers;
 
+import com.bjrushworth29.enums.DebugLevel;
 import com.bjrushworth29.enums.DefaultInventoryLoadout;
 import com.bjrushworth29.utils.Debug;
 import com.bjrushworth29.utils.InventoryLoadout;
@@ -30,7 +31,7 @@ public class InventoryLoadoutManager {
 
 		LOADOUTS.put(DefaultInventoryLoadout.HUB_QUEUED.toString(), new InventoryLoadout(hubQueuedHotbar));
 
-		Debug.info("Initialised inventory loadouts");
+		Debug.info(DebugLevel.MIN, "Initialised inventory loadouts");
 	}
 
 	public static InventoryLoadout getDefaultLoadout(DefaultInventoryLoadout inventoryLoadout) {

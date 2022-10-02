@@ -1,5 +1,6 @@
 package com.bjrushworth29.managers;
 
+import com.bjrushworth29.enums.DebugLevel;
 import com.bjrushworth29.utils.Debug;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -18,7 +19,7 @@ public class ItemManager {
 
 		ITEMS.put("screenSumoGame", create(Material.WOOL, ChatColor.BLUE + "Sumo"));
 
-		Debug.info("Initialised items");
+		Debug.info(DebugLevel.MIN, "Initialised items");
 	}
 
 	public static ItemStack getItem(String name) {
