@@ -15,6 +15,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scoreboard.Team;
+import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +35,7 @@ public class Game {
 	private final boolean canRejoin;
 	private GameState gameState;
 
-	private World world;
+	private Vector mapOffset;
 	private GameWorld worldSettings;
 
 	private final HashMap<Player, PlayerGameData> players;
@@ -78,9 +79,6 @@ public class Game {
 	public void init(GameWorld worldSettings) {
 		this.worldSettings = worldSettings;
 
-		world = worldSettings.createSessionWorld();
-		world.loadChunk(0, 0);
-
 		gameState = GameState.WAITING;
 	}
 
@@ -108,7 +106,11 @@ public class Game {
 		PlayerConstraintManager.applyConstraints(player, Constraints.WAITING);
 
 		List<TeamObject<Location>> spawnPoints = worldSettings.getSpawnPoints();
-		player.teleport(spawnPoints.get(getPlayers().size() % spawnPoints.size()).getObject());
+		Location location = spawnPoints.get(getPlayers().size() % spawnPoints.size()).getObject();
+
+		player.teleport(location);
+
+		players.get(player).setSpawnLocation(location);
 
 		if (players.size() >= joiningPlayers - cancelledPlayers) {
 			start();
@@ -220,18 +222,18 @@ public class Game {
 	public void handleDeathOrLeave(Player player, boolean leave) {
 		PlayerUtil.reset(player);
 
-		PlayerGameData data = players.get(player);
+		PlayerGameData playerData = players.get(player);
 
-		data.setInGame(!leave);
+		playerData.setInGame(!leave);
 
-		if (data.getLives() > 0) {
-			data.decrementLives();
+		if (playerData.getLives() > 0) {
+			playerData.decrementLives();
 		}
 
 		switch (gameType) {
 			case BED_DESTRUCTION:
 			case BED_LAST_STANDING:
-				if (data.getLives() != 0) {
+				if (playerData.getLives() != 0) {
 					new Countdown(
 							3,
 							timer -> {
@@ -252,7 +254,7 @@ public class Game {
 									return;
 								}
 
-								WorldManager.teleportToSpawn(player, world);
+								player.teleport(playerData.getSpawnLocation());
 								PlayerConstraintManager.applyConstraints(player, gameConstraints);
 							}
 					).start();
@@ -279,9 +281,9 @@ public class Game {
 				break;
 		}
 
-		if (data.getLives() == 0) {
+		if (playerData.getLives() == 0) {
 			PlayerConstraintManager.applyConstraints(player, Constraints.SPECTATOR);
-			WorldManager.teleportToSpawn(player, world);
+			player.teleport(playerData.getSpawnLocation());
 		}
 	}
 

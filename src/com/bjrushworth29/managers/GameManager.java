@@ -147,7 +147,7 @@ public class GameManager {
 
 	private static void createGameWorlds() {
 		GAME_WORLDS.add(new GameWorld(
-				DefaultWorld.SUMO.toString(),
+				"Sumo Platform",
 				0,
 				0,
 				Arrays.asList(GameType.SUMO),

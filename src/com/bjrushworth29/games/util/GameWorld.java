@@ -1,11 +1,8 @@
 package com.bjrushworth29.games.util;
 
 import com.bjrushworth29.enums.GameType;
-import com.bjrushworth29.managers.WorldManager;
 import org.bukkit.Location;
-import org.bukkit.World;
 
-import java.io.File;
 import java.util.List;
 
 public final class GameWorld {
@@ -43,15 +40,8 @@ public final class GameWorld {
 		return maxTeams;
 	}
 
-	public World createSessionWorld() {
-		String session_world = String.format("%d_active_game_%s", System.currentTimeMillis(), name);
-
-		WorldManager.copyWorld(
-				new File(String.format("game_%s", name)),
-				new File(session_world)
-		);
-
-		return WorldManager.getWorld(session_world);
+	public void createSession() {
+		// TODO
 	}
 
 	public List<GameType> getGameTypes() {

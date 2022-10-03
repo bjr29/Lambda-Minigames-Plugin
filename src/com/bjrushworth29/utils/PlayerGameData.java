@@ -1,11 +1,14 @@
 package com.bjrushworth29.utils;
 
+import org.bukkit.Location;
+
 public class PlayerGameData {
 	private boolean spawnProtection = false;
 	private boolean inGame = true;
 	private boolean isSpectator = false;
 	private int lives = 0;
 	private Countdown countdown;
+	private Location respawnPosition;
 
 	public boolean hasSpawnProtection() {
 		return spawnProtection;
@@ -62,5 +65,13 @@ public class PlayerGameData {
 
 	public void setSpectator(boolean spectator) {
 		isSpectator = spectator;
+	}
+
+	public void setSpawnLocation(Location spawnLocation) {
+		respawnPosition = spawnLocation;
+	}
+
+	public Location getSpawnLocation() {
+		return respawnPosition;
 	}
 }

@@ -12,7 +12,6 @@ kanban-plugin: basic
 - [ ] Bed breaking system<br><br>#feature #2
 - [ ] Map no build/ break zones<br><br>#feature #2
 - [ ] Bed fight game mode<br><br>- [ ] Basic map<br><br>#feature #gamemode #3
-- [ ] Improving game load time<br>- [ ] Copying world on a separate thread<br><br>#optimisation #2
 - [ ] Wait for all players to be fully loaded<br><br>#feature #3
 
 
@@ -25,6 +24,7 @@ kanban-plugin: basic
 ## In Progress
 
 - [ ] Refine knockback values<br><br>#adjustment #2
+- [ ] Rework world system<br><br>#feature #1
 
 
 ## Testing
