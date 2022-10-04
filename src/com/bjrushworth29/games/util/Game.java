@@ -11,7 +11,6 @@ import com.bjrushworth29.utils.*;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scoreboard.Team;
@@ -36,7 +35,8 @@ public class Game {
 	private GameState gameState;
 
 	private Vector mapOffset;
-	private GameWorld worldSettings;
+	private int gameSquareId;
+	private GameMap mapSettings;
 
 	private final HashMap<Player, PlayerGameData> players;
 
@@ -46,9 +46,9 @@ public class Game {
 
 	public Game(GameType gameType,
 				Constraints gameConstraints,
-				int maxPlayers,
 				int minPlayers,
-				boolean useTeams,
+				int maxPlayers,
+	            boolean useTeams,
 				boolean canRejoin,
 				int startingLives,
 				int spawnProtectionLength) {
@@ -76,8 +76,12 @@ public class Game {
 		this.canRejoin = game.getCanRejoin();
 	}
 
-	public void init(GameWorld worldSettings) {
-		this.worldSettings = worldSettings;
+	public void init(GameMap worldSettings, Vector mapOffset, int gameSquareId) {
+		this.mapSettings = worldSettings;
+		this.mapOffset = mapOffset;
+		this.gameSquareId = gameSquareId;
+
+		worldSettings.createSession(mapOffset);
 
 		gameState = GameState.WAITING;
 	}
@@ -105,7 +109,7 @@ public class Game {
 
 		PlayerConstraintManager.applyConstraints(player, Constraints.WAITING);
 
-		List<TeamObject<Location>> spawnPoints = worldSettings.getSpawnPoints();
+		List<TeamObject<Location>> spawnPoints = mapSettings.getSpawnPoints();
 		Location location = spawnPoints.get(getPlayers().size() % spawnPoints.size()).getObject();
 
 		player.teleport(location);
@@ -152,13 +156,9 @@ public class Game {
 		GameManager.removeActiveGame(this);
 	}
 
-	public void delete() {
-		WorldManager.deleteWorld(world, true);
-	}
-
 	private void start() {
 		if (gameState != GameState.WAITING) {
-			Debug.warn("Failed to start game '%s' while in state '%s'", world.getName(), gameState.toString());
+			Debug.warn("Failed to start game '%s' while in state '%s'", mapSettings.name(), gameState.toString());
 
 			return;
 		}
@@ -290,7 +290,7 @@ public class Game {
 	public void handleMovement(PlayerMoveEvent event) {
 		Player player = event.getPlayer();
 
-		if (event.getTo().getY() <= worldSettings.getKillBelow()) {
+		if (event.getTo().getY() <= mapSettings.getKillBelow()) {
 			handleDeathOrLeave(player, false);
 		}
 	}
@@ -363,6 +363,10 @@ public class Game {
 
 	public void setJoiningPlayers(int joiningPlayers) {
 		this.joiningPlayers = joiningPlayers;
+	}
+
+	public Integer getGameSquareId() {
+		return gameSquareId;
 	}
 }
 

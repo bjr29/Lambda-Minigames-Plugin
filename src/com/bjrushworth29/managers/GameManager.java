@@ -2,38 +2,67 @@ package com.bjrushworth29.managers;
 
 import com.bjrushworth29.enums.*;
 import com.bjrushworth29.games.util.Game;
+import com.bjrushworth29.games.util.GameMap;
 import com.bjrushworth29.games.util.GameQueue;
-import com.bjrushworth29.games.util.GameWorld;
 import com.bjrushworth29.games.util.TeamObject;
 import com.bjrushworth29.utils.Debug;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import java.util.*;
 
 public class GameManager {
+	public static final int GAME_SPACES_SQUARED = 1000;
+	public static final int GAME_SQUARE_SIZE = 2000;
+
 	private static final HashMap<String, Game> GAMES = new HashMap<>();
-	private static final ArrayList<GameWorld> GAME_WORLDS = new ArrayList<>();
+	private static final ArrayList<GameMap> GAME_MAPS = new ArrayList<>();
 	private static final ArrayList<Game> ACTIVE_GAMES = new ArrayList<>();
 	private static final HashMap<Game, GameQueue> QUEUES = new HashMap<>();
+	private static final ArrayList<Integer> TAKEN_GAME_SQUARES = new ArrayList<>();
 
 	private static final Random RANDOM = new Random();
 
 	static {
 		createGames();
-		createGameWorlds();
+		createGameMaps();
 
 		Debug.info(DebugLevel.MIN, "Initialised games");
 	}
 
 	public static void createGameSession(Game game) {
-		GameWorld[] selection = GAME_WORLDS.stream()
-				.filter(world -> world.getGameTypes().contains(game.getGameType()))
-				.toArray(GameWorld[]::new);
-		GameWorld gameWorldSettings = selection[RANDOM.nextInt(selection.length)];
+		GameMap[] selection = GAME_MAPS.stream()
+				.filter(map -> map.getGameTypes().contains(game.getGameType()))
+				.toArray(GameMap[]::new);
+		GameMap gameMapSettings = selection[RANDOM.nextInt(selection.length)];
 
-		game.init(gameWorldSettings);
+		int squareId = getFirstEmptyGameSquareId();
+		Vector mapOffset = getGameSquare(squareId);
+
+		game.init(gameMapSettings, mapOffset, squareId);
+
+		TAKEN_GAME_SQUARES.add(squareId);
+	}
+
+	private static int getFirstEmptyGameSquareId() {
+		int size = TAKEN_GAME_SQUARES.size();
+
+		for (int i = 0; i < size; i++) {
+			int gameSquare = TAKEN_GAME_SQUARES.get(i);
+
+			if (gameSquare != i) {
+				return i;
+			}
+		}
+
+		return size;
+	}
+
+	private static Vector getGameSquare(int id) {
+		return new Vector(GAME_SPACES_SQUARED / id, 0, GAME_SPACES_SQUARED % id).multiply(GAME_SQUARE_SIZE);
 	}
 
 	private static void startGame(Game game, ArrayList<Player> players) {
@@ -145,18 +174,19 @@ public class GameManager {
 		}
 	}
 
-	private static void createGameWorlds() {
-		GAME_WORLDS.add(new GameWorld(
+	private static void createGameMaps() {
+		GAME_MAPS.add(new GameMap(
 				"Sumo Platform",
+				DefaultWorld.SUMO,
 				0,
 				0,
 				Arrays.asList(GameType.SUMO),
 				Arrays.asList(
 						new TeamObject<>(
-							new Location(WorldManager.getWorld(DefaultWorld.SUMO), -6, 100, 0), null, false, true
+							new Location(WorldManager.getWorld(DefaultWorld.GAMES), -6, 100, 0), null, false, true
 						),
 						new TeamObject<>(
-							new Location(WorldManager.getWorld(DefaultWorld.SUMO), 6, 100, 0), null, false, true
+							new Location(WorldManager.getWorld(DefaultWorld.GAMES), 6, 100, 0), null, false, true
 						)
 				),
 				null,
@@ -180,7 +210,10 @@ public class GameManager {
 
 	public static void removeActiveGame(Game game) {
 		ACTIVE_GAMES.remove(game);
-		game.delete();
+		TAKEN_GAME_SQUARES.remove(game.getGameSquareId());
+
+		World world = WorldManager.getWorld(DefaultWorld.GAMES);
+
 	}
 
 	public static void removeActiveGames() {
