@@ -7,9 +7,9 @@
         "id": "ce23d3d09a5870c8",
         "type": "leaf",
         "state": {
-          "type": "kanban",
+          "type": "excalidraw",
           "state": {
-            "file": "Kanban.md"
+            "file": "Whiteboard.excalidraw.md"
           }
         }
       }
@@ -23,10 +23,9 @@
       {
         "id": "4259ad553439b992",
         "type": "tabs",
-        "dimension": 57.11402623612513,
         "children": [
           {
-            "id": "060a7296c4dec23d",
+            "id": "0e76f42bb78d9a72",
             "type": "leaf",
             "state": {
               "type": "file-explorer",
@@ -53,7 +52,6 @@
       {
         "id": "71526e9c099cd1aa",
         "type": "tabs",
-        "dimension": 42.88597376387487,
         "children": [
           {
             "id": "4f5e05ef4fd8c298",
@@ -61,7 +59,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Kanban.md"
+                "file": "Whiteboard.excalidraw.md"
               }
             }
           }
@@ -85,7 +83,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Kanban.md",
+                "file": "Whiteboard.excalidraw.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -114,14 +112,15 @@
   },
   "active": "ce23d3d09a5870c8",
   "lastOpenFiles": [
-    "Game World Rework.md",
     "Kanban.md",
+    "Whiteboard.excalidraw.md",
+    "Excalidraw/Drawing 2022-10-05 10.35.26.excalidraw.md",
+    "Game World Rework.md",
     "Excalidraw/Drawing 2022-09-25 15.28.58.excalidraw.md",
     "Lambda Minigames Server/LMS Project Management.md",
     "Untitled Programming Language/Syntax.md",
     "Lambda Minigames Minecraft Server/Maps.md",
     "Lambda Minigames Minecraft Server/Creating a Minigame.md",
-    "Lambda Minigames Minecraft Server/Concept.md",
-    "Lambda Minigames Minecraft Server/Armorstand Name Prefixes.md"
+    "Lambda Minigames Minecraft Server/Concept.md"
   ]
 }

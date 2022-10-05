@@ -4,11 +4,15 @@ import com.bjrushworth29.commands.ChangeKnockbackCommand;
 import com.bjrushworth29.commands.EndGameCommand;
 import com.bjrushworth29.commands.LeaveQueueCommand;
 import com.bjrushworth29.commands.LobbyCommand;
+import com.bjrushworth29.enums.DebugLevel;
+import com.bjrushworth29.enums.DefaultWorld;
 import com.bjrushworth29.events.*;
 import com.bjrushworth29.items.LeaveQueueItem;
 import com.bjrushworth29.items.SelectGameItem;
 import com.bjrushworth29.managers.GameManager;
+import com.bjrushworth29.managers.WorldManager;
 import com.bjrushworth29.screens.SelectGameScreen;
+import com.bjrushworth29.utils.Debug;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -33,10 +37,17 @@ public class LambdaMinigames extends JavaPlugin {
 	}
 
 	private void initAll() {
+		preloadWorlds();
 		registerCommands();
 		initEvents();
 		initItemEvents();
 		initScreenEvents();
+	}
+
+	private void preloadWorlds() {
+		WorldManager.getWorld(DefaultWorld.GAMES);
+
+		Debug.info(DebugLevel.MIN, "Preloaded game world");
 	}
 
 	private void registerCommands() {

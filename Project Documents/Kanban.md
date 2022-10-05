@@ -18,7 +18,6 @@ kanban-plugin: basic
 ## Todo
 
 - [ ] Prevent glitchy movement while waiting to start game<br><br>#bug #1
-- [ ] Prevent being stuck after dying<br><br>#bug #2
 
 
 ## In Progress
@@ -29,7 +28,6 @@ kanban-plugin: basic
 
 ## Testing
 
-- [ ] Spawn player on team side of map<br><br>#feature #1
 - [ ] Leaving the game before it starts<br>- [x] 2 players<br>- [ ] \>2 players<br><br>#feature #2
 - [ ] Preventing the player joining a different game while in a game<br><br>#bug #4
 
@@ -37,7 +35,9 @@ kanban-plugin: basic
 ## Complete
 
 **Complete**
+- [x] Spawn player on team side of map<br><br>#feature #1
 - [x] Enums for names in managers<br><br>#refactor #4
+- [x] Prevent being stuck after dying<br><br>#bug #2
 - [x] Spectator player constraint<br><br>#feature #3
 - [x] Correct combat system<br><br>#bug #1
 - [x] PVP<br>- [x] Within lobby<br>- [x] Inside game<br>- [x] Before/ after game<br>- [x] Inside game with PVP disabled<br><br>#feature #1

@@ -1,6 +1,8 @@
 package com.bjrushworth29.managers;
 
+import com.bjrushworth29.enums.DebugLevel;
 import com.bjrushworth29.enums.DefaultWorld;
+import com.bjrushworth29.utils.Debug;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -28,6 +30,8 @@ public class WorldManager {
 	public static void teleportToSpawn(Player player, World world) {
 		player.setVelocity(new Vector());
 		player.teleport(getSpawnLocation(world));
+
+		Debug.info(DebugLevel.FULL, "Teleported player '%s' to '%s' spawn", player.getName(), world.getName());
 	}
 
 	public static Location getSpawnLocation(World world) {

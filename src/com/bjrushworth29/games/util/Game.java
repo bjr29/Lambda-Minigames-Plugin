@@ -1,9 +1,6 @@
 package com.bjrushworth29.games.util;
 
-import com.bjrushworth29.enums.Constraints;
-import com.bjrushworth29.enums.DefaultWorld;
-import com.bjrushworth29.enums.GameState;
-import com.bjrushworth29.enums.GameType;
+import com.bjrushworth29.enums.*;
 import com.bjrushworth29.managers.GameManager;
 import com.bjrushworth29.managers.PlayerConstraintManager;
 import com.bjrushworth29.managers.WorldManager;
@@ -110,9 +107,14 @@ public class Game {
 		PlayerConstraintManager.applyConstraints(player, Constraints.WAITING);
 
 		List<TeamObject<Location>> spawnPoints = mapSettings.getSpawnPoints();
-		Location location = spawnPoints.get(getPlayers().size() % spawnPoints.size()).getObject();
+
+		Location location = mapSettings.getSpawnPoints()
+				.get(getPlayers().size() % spawnPoints.size())
+				.getObject()
+				.add(mapOffset);
 
 		player.teleport(location);
+		Debug.info(DebugLevel.FULL, "Teleported player '%s' into game", player.getName());
 
 		players.get(player).setSpawnLocation(location);
 
@@ -164,6 +166,7 @@ public class Game {
 		}
 
 		gameState = GameState.STARTING;
+		Debug.info(DebugLevel.FULL, "Starting game");
 
 		new Countdown(5,
 				(timer) -> {
@@ -181,15 +184,23 @@ public class Game {
 					}
 				},
 				() -> {
+					gameState = GameState.PLAYING;
+
 					for (Player player : getPlayers()) {
-						player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Game started!");
+						player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "Game started!");
 						PlayerConstraintManager.applyConstraints(player, gameConstraints);
 					}
+
+					Debug.info(DebugLevel.FULL, "Started game");
 				}
 		).start();
 	}
 
 	public void end(Player winner) {
+		gameState = GameState.FINISHED;
+
+		Debug.info(DebugLevel.FULL, "Ended game");
+
 		Title title = new Title(
 				String.format(ChatColor.GREEN + "%s has won!", winner.getName()),
 				"",
@@ -204,6 +215,7 @@ public class Game {
 					null,
 					() -> {
 						if (getPlayers().contains(player)) {
+							Debug.info("END Teleport");
 							WorldManager.teleportToSpawn(player, WorldManager.getWorld(DefaultWorld.HUB));
 						}
 					}
@@ -226,7 +238,12 @@ public class Game {
 
 		playerData.setInGame(!leave);
 
+		if (gameState != GameState.PLAYING) {
+			return;
+		}
+
 		if (playerData.getLives() > 0) {
+			Debug.info(DebugLevel.FULL, "Player '%s' has lost a life", player.getName());
 			playerData.decrementLives();
 		}
 
@@ -281,9 +298,11 @@ public class Game {
 				break;
 		}
 
-		if (playerData.getLives() == 0) {
+		if (playerData.getLives() == 0 && gameState == GameState.PLAYING) {
 			PlayerConstraintManager.applyConstraints(player, Constraints.SPECTATOR);
 			player.teleport(playerData.getSpawnLocation());
+
+			Debug.info(DebugLevel.FULL, "Player '%s' has lost all lives", player.getName());
 		}
 	}
 
@@ -334,7 +353,9 @@ public class Game {
 	}
 
 	public boolean containsPlayer(Player player) {
-		return getPlayers().stream().anyMatch(x -> x.getUniqueId() == player.getUniqueId());
+		return getPlayers()
+				.stream()
+				.anyMatch(x -> x.getUniqueId() == player.getUniqueId());
 	}
 
 	public Constraints getGameConstraints() {

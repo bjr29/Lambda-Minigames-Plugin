@@ -5,6 +5,7 @@ import com.bjrushworth29.games.util.Game;
 import com.bjrushworth29.games.util.GameMap;
 import com.bjrushworth29.games.util.GameQueue;
 import com.bjrushworth29.games.util.TeamObject;
+import com.bjrushworth29.utils.Countdown;
 import com.bjrushworth29.utils.Debug;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -15,7 +16,7 @@ import org.bukkit.util.Vector;
 import java.util.*;
 
 public class GameManager {
-	public static final int GAME_SPACES_SQUARED = 1000;
+	public static final int GAME_SPACES_SQUARED = 250;
 	public static final int GAME_SQUARE_SIZE = 2000;
 
 	private static final HashMap<String, Game> GAMES = new HashMap<>();
@@ -62,7 +63,22 @@ public class GameManager {
 	}
 
 	private static Vector getGameSquare(int id) {
-		return new Vector(GAME_SPACES_SQUARED / id, 0, GAME_SPACES_SQUARED % id).multiply(GAME_SQUARE_SIZE);
+		int x = id % GAME_SPACES_SQUARED;
+		int z = 0;
+
+		// TODO: Replace with maths (was tired lmao)
+		for (int i = 0; i < id; i++) {
+			if (i + GAME_SPACES_SQUARED <= id) {
+				i += GAME_SPACES_SQUARED;
+				z++;
+
+				continue;
+			}
+
+			break;
+		}
+
+		return new Vector(x, 0, z).multiply(GAME_SQUARE_SIZE);
 	}
 
 	private static void startGame(Game game, ArrayList<Player> players) {
@@ -102,11 +118,17 @@ public class GameManager {
 		player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "You have entered the queue!");
 		InventoryLoadoutManager.giveInventoryLoadout(player, InventoryLoadoutManager.getDefaultLoadout(DefaultInventoryLoadout.HUB_QUEUED));
 
+		Countdown countdown = gameQueue.getCountdown();
+
+		Debug.info(DebugLevel.FULL, "Game queue size: '%s', countdown: '%s'", players.size(), countdown.isRunning());
+
 		if (players.size() >= game.getMaxPlayers()) {
 			startGame(game, players);
 
-		} else if (!gameQueue.getCountdown().isRunning() && players.size() >= game.getMinPlayers()) {
-			gameQueue.getCountdown().setCompleted(() -> startGame(game, players));
+		} else if (!countdown.isRunning() && players.size() >= game.getMinPlayers()) {
+			Debug.info(DebugLevel.FULL, "Starting game queue");
+			countdown.setCompleted(() -> startGame(game, players));
+			countdown.start();
 		}
 	}
 
@@ -199,7 +221,7 @@ public class GameManager {
 		GAMES.put("sumo", new Game(
 				GameType.SUMO,
 				Constraints.PVP_SUMO,
-				2,
+				1,
 				2,
 				false,
 				false,

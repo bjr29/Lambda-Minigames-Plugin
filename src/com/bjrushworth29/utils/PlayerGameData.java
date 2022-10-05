@@ -8,7 +8,7 @@ public class PlayerGameData {
 	private boolean isSpectator = false;
 	private int lives = 0;
 	private Countdown countdown;
-	private Location respawnPosition;
+	private Location spawnPosition;
 
 	public boolean hasSpawnProtection() {
 		return spawnProtection;
@@ -68,10 +68,10 @@ public class PlayerGameData {
 	}
 
 	public void setSpawnLocation(Location spawnLocation) {
-		respawnPosition = spawnLocation;
+		spawnPosition = spawnLocation;
 	}
 
 	public Location getSpawnLocation() {
-		return respawnPosition;
+		return spawnPosition;
 	}
 }

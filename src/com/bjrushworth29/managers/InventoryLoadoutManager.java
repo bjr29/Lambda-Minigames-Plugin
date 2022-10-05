@@ -64,7 +64,7 @@ public class InventoryLoadoutManager {
 
 		for (int i = 0; i < LOADOUTS.size(); i++) {
 			if (LOADOUTS.values().toArray()[i] == loadout) {
-				loadoutName = (String) LOADOUTS.entrySet().toArray(new Map.Entry[0])[0].getKey();
+				loadoutName = (String) LOADOUTS.entrySet().toArray(new Map.Entry[0])[i].getKey();
 			}
 		}
 

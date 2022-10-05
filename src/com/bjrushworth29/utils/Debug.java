@@ -20,12 +20,24 @@ public class Debug {
 	}
 
 	public static void info(DebugLevel debugLevel, String message, Object... args) {
-		if (LEVEL == DebugLevel.FULL || debugLevel == DebugLevel.MIN && LEVEL == DebugLevel.MIN) {
-			LOGGER.info(String.format(message, args));
+		switch (LEVEL) {
+			case REGULAR:
+				if (debugLevel == DebugLevel.REGULAR) {
+					break;
+				}
 
-		} else if (LEVEL != DebugLevel.WARNING_ONLY) {
-			LOGGER.info(String.format(message, args));
+			case MIN:
+				if (debugLevel == DebugLevel.MIN) {
+					break;
+				}
+				return;
+
+			case WARNING_ONLY:
+			case NONE:
+				return;
 		}
+
+		LOGGER.info(String.format(message, args));
 	}
 
 	public static void warn(String message, Object... args) {
