@@ -1,0 +1,70 @@
+.kanban-plugin__item.has-tag-priority-highest .kanban-plugin__item-title-wrapper {
+	border-style: none none solid none;
+	border-color: #d4281c;
+}
+
+.kanban-plugin__item.has-tag-priority-high .kanban-plugin__item-title-wrapper {
+	border-style: none none solid none;
+	border-color: #b07602;
+}
+
+.kanban-plugin__item.has-tag-priority-medium .kanban-plugin__item-title-wrapper {
+	border-style: none none solid none;
+	border-color: #188509;
+}
+
+.kanban-plugin__item.has-tag-priority-low .kanban-plugin__item-title-wrapper {
+	border-style: none none solid none;
+	border-color: #006c85;
+}
+
+.kanban-plugin__item.has-tag-priority-lowest .kanban-plugin__item-title-wrapper {
+	border-style: none none solid none;
+	border-color: #652a91;
+}
+
+.kanban-plugin__item-tag {
+	color: #aaa !important;
+	padding: 6px !important;
+}
+
+.kanban-plugin__item-tag[href="#bug"] {
+	color: #fff !important;
+	background-color: #d4281c !important;
+	padding: 6px !important;
+}
+
+.kanban-plugin__item-tag[href="#feature"] {
+	color: #fff !important;
+	background-color: #188509 !important;
+	padding: 6px !important;
+}
+
+.kanban-plugin__item-tag[href="#game-mode"] {
+	color: #fff !important;
+	background-color: #18850977 !important;
+	padding: 6px !important;
+}
+
+.kanban-plugin__item-tag[href="#building"] {
+	color: #fff !important;
+	background-color: #652a91 !important;
+	padding: 6px !important;
+}
+
+.kanban-plugin__item-tag[href="#adjustment"] {
+	color: #fff !important;
+	background-color: #b07602 !important;
+	padding: 6px !important;
+}
+
+.kanban-plugin__item-tag[href="#refactor"] {
+	color: #fff !important;
+	background-color: #006c85 !important;
+	padding: 6px !important;
+}
+
+.kanban-plugin__item-tag:hover {
+	color: #000 !important;
+	background-color: #aaa !important;
+}

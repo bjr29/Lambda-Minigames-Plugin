@@ -1,6 +1,7 @@
 package com.bjrushworth29.utils;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 public class PlayerGameData {
 	private boolean spawnProtection = false;
@@ -9,6 +10,8 @@ public class PlayerGameData {
 	private int lives = 0;
 	private Countdown countdown;
 	private Location spawnPosition;
+	private boolean applyKnockback = false;
+	private Player previousAttacker;
 
 	public boolean hasSpawnProtection() {
 		return spawnProtection;
@@ -73,5 +76,21 @@ public class PlayerGameData {
 
 	public Location getSpawnLocation() {
 		return spawnPosition;
+	}
+
+	public boolean shouldApplyKnockback() {
+		return applyKnockback;
+	}
+
+	public void setApplyKnockback(boolean applyKnockback) {
+		this.applyKnockback = applyKnockback;
+	}
+
+	public Player getPreviousAttacker() {
+		return previousAttacker;
+	}
+
+	public void setPreviousAttacker(Player previousAttacker) {
+		this.previousAttacker = previousAttacker;
 	}
 }

@@ -58,7 +58,7 @@ public class Countdown implements Runnable {
 		id = Bukkit.getScheduler().scheduleSyncRepeatingTask(LambdaMinigames.getPlugin(), this, 0L, 20L);
 	}
 
-	public void restart() {
+	public void reset() {
 		seconds = totalSeconds;
 		Bukkit.getScheduler().cancelTask(id);
 	}

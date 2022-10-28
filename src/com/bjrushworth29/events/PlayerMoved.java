@@ -14,6 +14,7 @@ public class PlayerMoved implements Listener {
 		Player player = event.getPlayer();
 
 		if (!PlayerConstraintManager.getAppliedConstraints(player).canMove()) {
+			player.teleport(event.getFrom().setDirection(event.getTo().getDirection()));
 			return;
 		}
 

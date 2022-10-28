@@ -1,6 +1,5 @@
 package com.bjrushworth29.events;
 
-import com.bjrushworth29.commands.ChangeKnockbackCommand;
 import com.bjrushworth29.games.util.Game;
 import com.bjrushworth29.managers.GameManager;
 import com.bjrushworth29.managers.PlayerConstraintManager;
@@ -99,16 +98,9 @@ public class PlayerDamaged implements Listener {
 		if (player.getHealth() - event.getFinalDamage() <= 0) {
 			event.setCancelled(true);
 			game.handleDeathOrLeave(player, false);
-
-			return;
 		}
 
-		player.setVelocity(
-				damager.getLocation()
-						.getDirection()
-						.normalize()
-						.setY(ChangeKnockbackCommand.knockbackUpward)
-						.multiply(ChangeKnockbackCommand.knockbackForward)
-		);
+		playerGameConstraints.setApplyKnockback(true);
+		playerGameConstraints.setPreviousAttacker(damager);
 	}
 }

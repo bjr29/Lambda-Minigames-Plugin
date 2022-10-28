@@ -14,6 +14,7 @@ import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 public final class GameMap {
 	private final String name;
@@ -25,6 +26,7 @@ public final class GameMap {
 	private final List<TeamObject<Location>> bedLocations;
 	private final List<TeamObject<Location>> pointPitLocations;
 	private final HashMap<Vector, Block> map;
+	private final Set<Vector> destroy;
 	private final int killBelow;
 
 	public GameMap(String name, DefaultWorld world, int minTeams, int maxTeams, List<GameType> gameTypes,
@@ -50,7 +52,17 @@ public final class GameMap {
 				new Vector(mapScanSize, 150, mapScanSize)
 		);
 
+		destroy = map.keySet();
+
 		Debug.info(DebugLevel.MIN, "Loaded map '%s' into memory", name);
+	}
+
+	public void createMap(Vector offset) {
+		BuildUtil.placeAll(map, WorldManager.getWorld(DefaultWorld.GAMES), offset);
+	}
+
+	public void destroy(Vector offset) {
+		BuildUtil.clearAll(destroy, WorldManager.getWorld(DefaultWorld.GAMES), offset);
 	}
 
 	public String name() {
@@ -63,10 +75,6 @@ public final class GameMap {
 
 	public int maxTeams() {
 		return maxTeams;
-	}
-
-	public void createSession(Vector offset) {
-		BuildUtil.placeAll(map, WorldManager.getWorld(DefaultWorld.GAMES), offset);
 	}
 
 	public List<GameType> getGameTypes() {

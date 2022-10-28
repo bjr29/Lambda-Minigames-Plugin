@@ -4,15 +4,15 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
-import org.bukkit.material.Directional;
-import org.bukkit.material.Openable;
 import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class BuildUtil {
 	public static HashMap<Vector, Block> getBlocksInArea(World world, Vector a, Vector b) {
+		// TODO: Get block data https://www.spigotmc.org/threads/copy-blocks-in-area.487490/
 		HashMap<Vector, Block> blocks = new HashMap<>();
 
 		for (int z = a.getBlockZ(); z < b.getBlockZ(); z++) {
@@ -32,21 +32,22 @@ public class BuildUtil {
 
 	public static void placeAll(HashMap<Vector, Block> blocks, World world, Vector offset) {
 		for (Map.Entry<Vector, Block> entry : blocks.entrySet()) {
-			Block block = entry.getValue();
+			Block sourceBlock = entry.getValue();
 
-			Block blockAt = world.getBlockAt(entry.getKey().add(offset).toLocation(world));
-			blockAt.setType(block.getType());
+			Block newBlock = world.getBlockAt(entry.getKey().add(offset).toLocation(world));
+			newBlock.setType(sourceBlock.getType());
 
-			BlockState blockAtState = blockAt.getState();
-			BlockState blockState = block.getState();
+			BlockState newBlockState = newBlock.getState();
+			BlockState sourceBlockState = sourceBlock.getState();
 
-			if (blockState instanceof Directional) {
-				((Directional) blockAtState).setFacingDirection(((Directional) blockState).getFacing());
-			}
+			newBlockState.setData(sourceBlockState.getData());
+			newBlockState.update(true);
+		}
+	}
 
-			if (blockState instanceof Openable) {
-				((Openable) blockAtState).setOpen(((Openable) blockState).isOpen());
-			}
+	public static void clearAll(Set<Vector> destroy, World world, Vector offset) {
+		for (Vector vector : destroy) {
+			world.getBlockAt(vector.toLocation(world)).setType(Material.AIR);
 		}
 	}
 }

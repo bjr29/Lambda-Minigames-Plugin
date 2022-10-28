@@ -12,18 +12,20 @@ public class ChangeKnockbackCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String string, String[] args) {
-		if (!Debug.USE_DEBUG_COMMANDS) {
+		if (!Debug.isUsingDebugCommands()) {
 			sender.sendMessage(ChatColor.RED + "Debug commands are disabled!");
 			return true;
 		}
 
-		if (args.length == 2) {
-			sender.sendMessage(ChatColor.RED + "Command requires 2 arguments.");
+		if (args.length != 2) {
+			sender.sendMessage(String.format(ChatColor.RED + "Command requires 2 arguments, %s supplied.", args.length));
 			return true;
 		}
 
 		knockbackForward = Double.parseDouble(args[0]);
 		knockbackUpward = Double.parseDouble(args[1]);
+
+		sender.sendMessage(String.format("Knockback is now %s, %s", knockbackForward, knockbackUpward));
 
 		return true;
 	}

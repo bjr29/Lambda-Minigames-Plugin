@@ -7,10 +7,12 @@ import java.util.ArrayList;
 
 public final class GameQueue {
 	private final ArrayList<Player> players;
+	private final int minPlayers;
 
 	private Countdown countdown;
 
-	public GameQueue(int queueTime) {
+	public GameQueue(int queueTime, int minPlayers) {
+		this.minPlayers = minPlayers;
 		this.players = new ArrayList<>();
 
 		this.setCountdown(new Countdown(
@@ -19,9 +21,13 @@ public final class GameQueue {
 					int seconds = timer.getSeconds();
 
 					if (seconds % 5 == 0) {
-						for (Player player : players) {
+						for (Player player : getPlayers()) {
 							player.sendMessage(String.format("Game starting in %d seconds", seconds));
 						}
+					}
+
+					if (players.size() < minPlayers) {
+						timer.reset();
 					}
 				},
 				() -> {}

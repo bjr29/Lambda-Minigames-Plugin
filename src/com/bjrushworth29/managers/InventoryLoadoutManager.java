@@ -68,6 +68,6 @@ public class InventoryLoadoutManager {
 			}
 		}
 
-		Debug.info("Player '%s' is being given inventory loadout '%s'", player.getName(), loadoutName);
+		Debug.info(DebugLevel.FULL, "Player '%s' is being given inventory loadout '%s'", player.getName(), loadoutName);
 	}
 }

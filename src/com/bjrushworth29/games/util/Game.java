@@ -38,7 +38,6 @@ public class Game {
 	private final HashMap<Player, PlayerGameData> players;
 
 	private int joiningPlayers;
-	private int cancelledPlayers;
 	private ArrayList<Team> teams;
 
 	public Game(GameType gameType,
@@ -78,13 +77,13 @@ public class Game {
 		this.mapOffset = mapOffset;
 		this.gameSquareId = gameSquareId;
 
-		worldSettings.createSession(mapOffset);
+		worldSettings.createMap(mapOffset);
 
 		gameState = GameState.WAITING;
 	}
 
 	public void addPlayer(Player player) {
-		if (gameState != GameState.WAITING || (players.size() >= maxPlayers)) {
+		if (gameState != GameState.WAITING || players.size() >= maxPlayers) {
 			Debug.warn(
 					"Player '%s' attempted to join game (id: '%h') '%s' but was refused. Game state: '%s', " +
 							"can rejoin: '%b', game full: '%b'",
@@ -118,14 +117,13 @@ public class Game {
 
 		players.get(player).setSpawnLocation(location);
 
-		if (players.size() >= joiningPlayers - cancelledPlayers) {
+		if (players.size() >= joiningPlayers) {
 			start();
 		}
 	}
 
 	public void removePlayer(Player player) {
 		if (!players.containsKey(player)) {
-			Debug.warn("Attempted to remove '%s' from a game they're not in", player);
 			return;
 		}
 
@@ -135,20 +133,25 @@ public class Game {
 			}
 		}
 
-		if (gameState == GameState.WAITING) {
+		if (gameState == GameState.WAITING || gameState == GameState.STARTING) {
 			players.remove(player);
-			cancelledPlayers++;
+
+			Debug.info(DebugLevel.FULL, "Player '%s' has cancelled, %s players remain", player.getName(), getPlayers().size());
 
 		} else {
 			handleDeathOrLeave(player, true);
 		}
 
-		if (getPlayers().size() == 0 || (gameState == GameState.WAITING && getPlayers().size() - cancelledPlayers < minPlayers)) {
+		if ((getPlayers().size() == 0 || getPlayers().size() < minPlayers)
+				&& (gameState == GameState.WAITING || gameState == GameState.STARTING)) {
+			Debug.info(DebugLevel.FULL, "Cancelled game");
 			cancel();
 		}
 	}
 
 	private void cancel() {
+		gameState = GameState.CANCELLED;
+
 		for (Player player : getPlayers()) {
 			WorldManager.teleportToSpawn(player, WorldManager.getWorld(DefaultWorld.HUB));
 
@@ -168,8 +171,14 @@ public class Game {
 		gameState = GameState.STARTING;
 		Debug.info(DebugLevel.FULL, "Starting game");
 
-		new Countdown(5,
+		new Countdown(
+				5,
 				(timer) -> {
+					if (gameState == GameState.CANCELLED) {
+						timer.stop();
+						return;
+					}
+
 					Title title = new Title(
 							String.format(ChatColor.GOLD + "Game starting in %s seconds", timer.getSeconds()),
 							"",
@@ -201,6 +210,16 @@ public class Game {
 
 		Debug.info(DebugLevel.FULL, "Ended game");
 
+		if (winner == null) {
+			GameManager.removeActiveGame(this);
+
+			for (Player player : getPlayers()) {
+				WorldManager.teleportToSpawn(player, WorldManager.getWorld(DefaultWorld.HUB));
+			}
+
+			return;
+		}
+
 		Title title = new Title(
 				String.format(ChatColor.GREEN + "%s has won!", winner.getName()),
 				"",
@@ -215,7 +234,6 @@ public class Game {
 					null,
 					() -> {
 						if (getPlayers().contains(player)) {
-							Debug.info("END Teleport");
 							WorldManager.teleportToSpawn(player, WorldManager.getWorld(DefaultWorld.HUB));
 						}
 					}
@@ -281,8 +299,6 @@ public class Game {
 
 				PlayerConstraintManager.applyConstraints(player, Constraints.SPECTATOR);
 
-				checkEndState();
-
 				break;
 
 			case PIT:
@@ -293,16 +309,21 @@ public class Game {
 			case SUMO:
 				PlayerConstraintManager.applyConstraints(player, Constraints.SPECTATOR);
 
-				checkEndState();
-
 				break;
 		}
 
-		if (playerData.getLives() == 0 && gameState == GameState.PLAYING) {
+		if (playerData.getLives() == 0 && gameState == GameState.PLAYING && playerData.isInGame()) {
 			PlayerConstraintManager.applyConstraints(player, Constraints.SPECTATOR);
 			player.teleport(playerData.getSpawnLocation());
 
+			checkEndState();
+
 			Debug.info(DebugLevel.FULL, "Player '%s' has lost all lives", player.getName());
+
+		} else if (!playerData.isInGame()) {
+			Debug.info("Player '%s' has left the game", player.getName());
+
+			checkEndState();
 		}
 	}
 
@@ -317,6 +338,9 @@ public class Game {
 	private void checkEndState() {
 		if (getAlivePlayers().size() == 1) {
 			end(getAlivePlayers().get(0));
+
+		} else if (getAlivePlayers().size() == 0) {
+			end(null);
 		}
 	}
 
@@ -386,8 +410,16 @@ public class Game {
 		this.joiningPlayers = joiningPlayers;
 	}
 
-	public Integer getGameSquareId() {
+	public Integer getSquareId() {
 		return gameSquareId;
+	}
+
+	public Vector getMapOffset() {
+		return mapOffset;
+	}
+
+	public GameMap getMap() {
+		return mapSettings;
 	}
 }
 

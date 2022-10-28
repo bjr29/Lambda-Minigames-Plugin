@@ -9,14 +9,13 @@ import com.bjrushworth29.utils.Countdown;
 import com.bjrushworth29.utils.Debug;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.*;
 
 public class GameManager {
-	public static final int GAME_SPACES_SQUARED = 250;
+	public static final int GAME_SPACES_SQUARED = 300;
 	public static final int GAME_SQUARE_SIZE = 2000;
 
 	private static final HashMap<String, Game> GAMES = new HashMap<>();
@@ -43,6 +42,8 @@ public class GameManager {
 		int squareId = getFirstEmptyGameSquareId();
 		Vector mapOffset = getGameSquare(squareId);
 
+		Debug.info(DebugLevel.FULL, "Initialising game with map position ID '%s' and offset '%s'", squareId, mapOffset);
+
 		game.init(gameMapSettings, mapOffset, squareId);
 
 		TAKEN_GAME_SQUARES.add(squareId);
@@ -64,21 +65,11 @@ public class GameManager {
 
 	private static Vector getGameSquare(int id) {
 		int x = id % GAME_SPACES_SQUARED;
-		int z = 0;
+		int z = (int) Math.floor((float) id / GAME_SPACES_SQUARED);
 
-		// TODO: Replace with maths (was tired lmao)
-		for (int i = 0; i < id; i++) {
-			if (i + GAME_SPACES_SQUARED <= id) {
-				i += GAME_SPACES_SQUARED;
-				z++;
+		Vector offset = new Vector(GAME_SPACES_SQUARED / 2, 0, GAME_SPACES_SQUARED / 2);
 
-				continue;
-			}
-
-			break;
-		}
-
-		return new Vector(x, 0, z).multiply(GAME_SQUARE_SIZE);
+		return new Vector(x, 0, z).subtract(offset).multiply(GAME_SQUARE_SIZE);
 	}
 
 	private static void startGame(Game game, ArrayList<Player> players) {
@@ -107,27 +98,25 @@ public class GameManager {
 		Game game = GAMES.get(gameName);
 
 		if (!QUEUES.containsKey(game)) {
-			QUEUES.put(game, new GameQueue(game.getMaxPlayers() * 2));
+			QUEUES.put(game, new GameQueue(game.getMaxPlayers() * 2, game.getMinPlayers()));
 		}
 
 		GameQueue gameQueue = QUEUES.get(game);
-		ArrayList<Player> players = gameQueue.getPlayers();
-
-		players.add(player);
+		gameQueue.getPlayers().add(player);
 
 		player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "You have entered the queue!");
 		InventoryLoadoutManager.giveInventoryLoadout(player, InventoryLoadoutManager.getDefaultLoadout(DefaultInventoryLoadout.HUB_QUEUED));
 
 		Countdown countdown = gameQueue.getCountdown();
 
-		Debug.info(DebugLevel.FULL, "Game queue size: '%s', countdown: '%s'", players.size(), countdown.isRunning());
+		Debug.info(DebugLevel.FULL, "Game queue size: '%s', countdown: '%s'", gameQueue.getPlayers().size(), countdown.isRunning());
 
-		if (players.size() >= game.getMaxPlayers()) {
-			startGame(game, players);
+		if (gameQueue.getPlayers().size() >= game.getMaxPlayers()) {
+			startGame(game, gameQueue.getPlayers());
 
-		} else if (!countdown.isRunning() && players.size() >= game.getMinPlayers()) {
+		} else if (!countdown.isRunning() && gameQueue.getPlayers().size() >= game.getMinPlayers()) {
 			Debug.info(DebugLevel.FULL, "Starting game queue");
-			countdown.setCompleted(() -> startGame(game, players));
+			countdown.setCompleted(() -> startGame(game, gameQueue.getPlayers()));
 			countdown.start();
 		}
 	}
@@ -152,7 +141,7 @@ public class GameManager {
 		assert game != null;
 
 		if (players.size() < game.getMinPlayers() && queue.getCountdown().isRunning()) {
-			queue.getCountdown().restart();
+			queue.getCountdown().reset();
 		}
 	}
 
@@ -187,13 +176,15 @@ public class GameManager {
 	}
 
 	public static void removePlayer(Player player) {
-		for (Game game : ACTIVE_GAMES) {
+		// Crashes with for each loop
+		//noinspection ForLoopReplaceableByForEach
+		for (int i = 0; i < ACTIVE_GAMES.size(); i++) {
+			Game game = ACTIVE_GAMES.get(i);
+
 			game.removePlayer(player);
 		}
 
-		for (GameQueue queue : QUEUES.values()) {
-			queue.getPlayers().remove(player);
-		}
+		leaveQueue(player);
 	}
 
 	private static void createGameMaps() {
@@ -205,10 +196,18 @@ public class GameManager {
 				Arrays.asList(GameType.SUMO),
 				Arrays.asList(
 						new TeamObject<>(
-							new Location(WorldManager.getWorld(DefaultWorld.GAMES), -6, 100, 0), null, false, true
+							new Location(WorldManager.getWorld(DefaultWorld.GAMES), -5.5, 100, 0.5)
+									.setDirection(new Vector(90 / Math.PI, 0, 0)),
+								null,
+								false,
+								true
 						),
 						new TeamObject<>(
-							new Location(WorldManager.getWorld(DefaultWorld.GAMES), 6, 100, 0), null, false, true
+							new Location(WorldManager.getWorld(DefaultWorld.GAMES), 6.5, 100, 0.5)
+									.setDirection(new Vector(-90 / Math.PI, 0, 0)),
+								null,
+								false,
+								true
 						)
 				),
 				null,
@@ -221,7 +220,7 @@ public class GameManager {
 		GAMES.put("sumo", new Game(
 				GameType.SUMO,
 				Constraints.PVP_SUMO,
-				1,
+				2,
 				2,
 				false,
 				false,
@@ -232,10 +231,9 @@ public class GameManager {
 
 	public static void removeActiveGame(Game game) {
 		ACTIVE_GAMES.remove(game);
-		TAKEN_GAME_SQUARES.remove(game.getGameSquareId());
+		TAKEN_GAME_SQUARES.remove(game.getSquareId());
 
-		World world = WorldManager.getWorld(DefaultWorld.GAMES);
-
+		game.getMap().destroy(game.getMapOffset());
 	}
 
 	public static void removeActiveGames() {

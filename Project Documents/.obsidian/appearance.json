@@ -1,6 +1,12 @@
 {
   "baseFontSize": 16,
   "translucency": false,
-  "cssTheme": "Prism",
-  "theme": "obsidian"
+  "cssTheme": "Willemstad",
+  "theme": "obsidian",
+  "accentColor": "",
+  "showViewHeader": false,
+  "nativeMenus": false,
+  "enabledCssSnippets": [
+    "kanban-tags"
+  ]
 }
