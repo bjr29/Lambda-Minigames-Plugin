@@ -1,6 +1,6 @@
 name: LambdaMinigamesPlugin
 version: 0.1
-main: com.bjrushworth29.LambdaMinigames
+main: com.bjrushworth29.lambdaminigames.LambdaMinigames
 api-version: 1.8.8
 author: bjr29
 prefix: LambdaM
