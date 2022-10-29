@@ -6,8 +6,18 @@ author: bjr29
 prefix: LambdaM
 
 commands:
+  addId:
+    usage: /<command> <number>
+    permission: op
+    permission-message: "Insufficient privileges to use command!"
+
   changeKnockback:
     usage: /<command> <forward> <upward>
+    permission: op
+    permission-message: "Insufficient privileges to use command!"
+
+  enableRemoveGame:
+    usage: /<command> <boolean>
     permission: op
     permission-message: "Insufficient privileges to use command!"
 

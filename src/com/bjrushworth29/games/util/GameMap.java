@@ -18,7 +18,6 @@ import java.util.Set;
 
 public final class GameMap {
 	private final String name;
-	private final World world;
 	private final int minTeams;
 	private final int maxTeams;
 	private final List<GameType> gameTypes;
@@ -33,7 +32,6 @@ public final class GameMap {
 	               List<TeamObject<Location>> spawnPoints, List<TeamObject<Location>> bedLocations,
 	               List<TeamObject<Location>> pointPitLocations, int killBelow) {
 		this.name = name;
-		this.world = WorldManager.getWorld(world);
 		this.minTeams = minTeams;
 		this.maxTeams = maxTeams;
 		this.gameTypes = gameTypes;
@@ -42,12 +40,14 @@ public final class GameMap {
 		this.pointPitLocations = pointPitLocations;
 		this.killBelow = killBelow;
 
+		World loaded_world = WorldManager.getWorld(world);
+
 		int mapScanSize = GameManager.GAME_SQUARE_SIZE / 16;
 
 		Debug.info(DebugLevel.MIN, "Loading map '%s' into memory", name);
 
 		map = BuildUtil.getBlocksInArea(
-				this.world,
+				loaded_world,
 				new Vector(-mapScanSize, 50, -mapScanSize),
 				new Vector(mapScanSize, 150, mapScanSize)
 		);
@@ -55,6 +55,8 @@ public final class GameMap {
 		destroy = map.keySet();
 
 		Debug.info(DebugLevel.MIN, "Loaded map '%s' into memory", name);
+
+		WorldManager.unloadWorld(loaded_world);
 	}
 
 	public void createMap(Vector offset) {
@@ -65,7 +67,7 @@ public final class GameMap {
 		BuildUtil.clearAll(destroy, WorldManager.getWorld(DefaultWorld.GAMES), offset);
 	}
 
-	public String name() {
+	public String getName() {
 		return name;
 	}
 

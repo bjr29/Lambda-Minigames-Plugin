@@ -2,6 +2,7 @@ package com.bjrushworth29.utils;
 
 import com.bjrushworth29.LambdaMinigames;
 import com.bjrushworth29.enums.DebugLevel;
+import com.bjrushworth29.managers.GameManager;
 import org.bukkit.Bukkit;
 
 import java.util.logging.Logger;
@@ -14,11 +15,13 @@ public class Debug {
 	static {
 		LOGGER = LambdaMinigames.getPlugin().getLogger();
 
-		if (!Bukkit.getIp().equals("")) {
+		if (Bukkit.getIp().equals("")) {
 			Debug.info("Server is running on localhost, using extra debug messages and commands");
 
 			debugLevel = DebugLevel.FULL;
-			setUseDebugCommands(true);
+			useDebugCommands = true;
+
+			GameManager.applyDebugSettings();
 		}
 	}
 
@@ -51,9 +54,5 @@ public class Debug {
 
 	public static boolean isUsingDebugCommands() {
 		return useDebugCommands;
-	}
-
-	public static void setUseDebugCommands(boolean useDebugCommands) {
-		Debug.useDebugCommands = useDebugCommands;
 	}
 }

@@ -6,9 +6,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-public class ChangeKnockbackCommand implements CommandExecutor {
-	public static double knockbackForward = 0.8;
-	public static double knockbackUpward = 0.5;
+public class EnableRemoveGameCommand implements CommandExecutor {
+	public static boolean state = true;
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String string, String[] args) {
@@ -17,15 +16,14 @@ public class ChangeKnockbackCommand implements CommandExecutor {
 			return true;
 		}
 
-		if (args.length != 2) {
+		if (args.length != 1) {
 			sender.sendMessage(String.format(ChatColor.RED + "Command requires 2 arguments, %s supplied.", args.length));
 			return true;
 		}
 
-		knockbackForward = Double.parseDouble(args[0]);
-		knockbackUpward = Double.parseDouble(args[1]);
+		state = Boolean.parseBoolean(args[0]);
 
-		sender.sendMessage(String.format("Knockback is now %s, %s", knockbackForward, knockbackUpward));
+		sender.sendMessage(String.format("Destroy map: %b", state));
 
 		return true;
 	}

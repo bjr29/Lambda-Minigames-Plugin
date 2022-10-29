@@ -95,7 +95,7 @@ public class PlayerConstraintManager {
 		player.setGameMode(constraints.gameMode());
 		player.setWalkSpeed(constraints.canMove() ? 0.2f : 0);
 
-		Debug.info(DebugLevel.FULL, "Given '%s' state '%s'", player, constraintName);
+		Debug.info(DebugLevel.FULL, "Given '%s' state '%s'", player.getName(), constraintName);
 	}
 
 	public static void clearPlayer(Player player) {

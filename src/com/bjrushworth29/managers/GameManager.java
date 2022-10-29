@@ -1,5 +1,7 @@
 package com.bjrushworth29.managers;
 
+import com.bjrushworth29.commands.AddGameIdCommand;
+import com.bjrushworth29.commands.EnableRemoveGameCommand;
 import com.bjrushworth29.enums.*;
 import com.bjrushworth29.games.util.Game;
 import com.bjrushworth29.games.util.GameMap;
@@ -39,7 +41,7 @@ public class GameManager {
 				.toArray(GameMap[]::new);
 		GameMap gameMapSettings = selection[RANDOM.nextInt(selection.length)];
 
-		int squareId = getFirstEmptyGameSquareId();
+		int squareId = getFirstEmptyGameSquareId() + AddGameIdCommand.id;
 		Vector mapOffset = getGameSquare(squareId);
 
 		Debug.info(DebugLevel.FULL, "Initialising game with map position ID '%s' and offset '%s'", squareId, mapOffset);
@@ -73,6 +75,15 @@ public class GameManager {
 	}
 
 	private static void startGame(Game game, ArrayList<Player> players) {
+		if (game.getMinPlayers() > players.size()) {
+			Debug.info(DebugLevel.FULL, "Cancelled game before starting");
+
+			Countdown countdown = QUEUES.get(game).getCountdown();
+			countdown.reset();
+
+			return;
+		}
+
 		Game newGame = new Game(game);
 
 		createGameSession(newGame);
@@ -105,6 +116,7 @@ public class GameManager {
 		gameQueue.getPlayers().add(player);
 
 		player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "You have entered the queue!");
+
 		InventoryLoadoutManager.giveInventoryLoadout(player, InventoryLoadoutManager.getDefaultLoadout(DefaultInventoryLoadout.HUB_QUEUED));
 
 		Countdown countdown = gameQueue.getCountdown();
@@ -116,6 +128,7 @@ public class GameManager {
 
 		} else if (!countdown.isRunning() && gameQueue.getPlayers().size() >= game.getMinPlayers()) {
 			Debug.info(DebugLevel.FULL, "Starting game queue");
+
 			countdown.setCompleted(() -> startGame(game, gameQueue.getPlayers()));
 			countdown.start();
 		}
@@ -126,7 +139,6 @@ public class GameManager {
 
 		if (queue == null) {
 			Debug.warn("Player '%s' attempted to leave queue whilst not in a queue!", player.getName());
-
 			return;
 		}
 
@@ -230,6 +242,10 @@ public class GameManager {
 	}
 
 	public static void removeActiveGame(Game game) {
+		if (!EnableRemoveGameCommand.state) {
+			return;
+		}
+
 		ACTIVE_GAMES.remove(game);
 		TAKEN_GAME_SQUARES.remove(game.getSquareId());
 
@@ -240,5 +256,24 @@ public class GameManager {
 		for (Game game : ACTIVE_GAMES) {
 			removeActiveGame(game);
 		}
+	}
+
+	public static void applyDebugSettings() {
+		for (String gameName : GAMES.keySet()) {
+			Game game = GAMES.get(gameName);
+
+			GAMES.put(gameName, new Game(
+					game.getGameType(),
+					game.getGameConstraints(),
+					1,
+					game.getMaxPlayers(),
+					game.canUseTeams(),
+					game.getCanRejoin(),
+					game.getStartingLives(),
+					game.getSpawnProtectionDuration()
+			));
+		}
+
+		Debug.info(DebugLevel.MIN, "Applied game debug settings");
 	}
 }

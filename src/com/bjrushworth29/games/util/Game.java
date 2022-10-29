@@ -40,6 +40,8 @@ public class Game {
 	private int joiningPlayers;
 	private ArrayList<Team> teams;
 
+	private Countdown cancelTimer;
+
 	public Game(GameType gameType,
 				Constraints gameConstraints,
 				int minPlayers,
@@ -80,6 +82,23 @@ public class Game {
 		worldSettings.createMap(mapOffset);
 
 		gameState = GameState.WAITING;
+
+		cancelTimer = new Countdown(
+				10,
+				null,
+				() -> {
+					if (getPlayers().size() < minPlayers) {
+						for (Player player : getPlayers()) {
+							player.sendMessage("Failed to start game due to not having enough players");
+						}
+
+						Debug.info(DebugLevel.MIN, "Failed to start game due to not having enough players");
+						cancel();
+					}
+				}
+		);
+
+		cancelTimer.start();
 	}
 
 	public void addPlayer(Player player) {
@@ -162,8 +181,10 @@ public class Game {
 	}
 
 	private void start() {
+		cancelTimer.stop();
+
 		if (gameState != GameState.WAITING) {
-			Debug.warn("Failed to start game '%s' while in state '%s'", mapSettings.name(), gameState.toString());
+			Debug.warn("Failed to start game '%s' while in state '%s'", mapSettings.getName(), gameState.toString());
 
 			return;
 		}

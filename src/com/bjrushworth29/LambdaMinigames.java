@@ -1,9 +1,6 @@
 package com.bjrushworth29;
 
-import com.bjrushworth29.commands.ChangeKnockbackCommand;
-import com.bjrushworth29.commands.EndGameCommand;
-import com.bjrushworth29.commands.LeaveQueueCommand;
-import com.bjrushworth29.commands.LobbyCommand;
+import com.bjrushworth29.commands.*;
 import com.bjrushworth29.enums.DebugLevel;
 import com.bjrushworth29.enums.DefaultWorld;
 import com.bjrushworth29.events.*;
@@ -13,7 +10,6 @@ import com.bjrushworth29.managers.GameManager;
 import com.bjrushworth29.managers.WorldManager;
 import com.bjrushworth29.screens.SelectGameScreen;
 import com.bjrushworth29.utils.Debug;
-import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -52,7 +48,9 @@ public class LambdaMinigames extends JavaPlugin {
 	}
 
 	private void registerCommands() {
+		getCommand("addId").setExecutor(new AddGameIdCommand());
 		getCommand("changeKnockback").setExecutor(new ChangeKnockbackCommand());
+		getCommand("enableRemoveGame").setExecutor(new EnableRemoveGameCommand());
 		getCommand("endGame").setExecutor(new EndGameCommand());
 		getCommand("leaveQueue").setExecutor(new LeaveQueueCommand());
 		getCommand("lobby").setExecutor(new LobbyCommand());

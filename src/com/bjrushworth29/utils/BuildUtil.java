@@ -1,5 +1,6 @@
 package com.bjrushworth29.utils;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -34,7 +35,11 @@ public class BuildUtil {
 		for (Map.Entry<Vector, Block> entry : blocks.entrySet()) {
 			Block sourceBlock = entry.getValue();
 
-			Block newBlock = world.getBlockAt(entry.getKey().add(offset).toLocation(world));
+			Location location = entry.getKey().add(offset).toLocation(world);
+
+			world.getChunkAt(location.getBlockX(), location.getBlockZ()).load();
+
+			Block newBlock = world.getBlockAt(location);
 			newBlock.setType(sourceBlock.getType());
 
 			BlockState newBlockState = newBlock.getState();

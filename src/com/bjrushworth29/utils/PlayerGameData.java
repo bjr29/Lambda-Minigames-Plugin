@@ -71,6 +71,7 @@ public class PlayerGameData {
 	}
 
 	public void setSpawnLocation(Location spawnLocation) {
+		Debug.info("Spawn location: %s", spawnLocation);
 		spawnPosition = spawnLocation;
 	}
 
