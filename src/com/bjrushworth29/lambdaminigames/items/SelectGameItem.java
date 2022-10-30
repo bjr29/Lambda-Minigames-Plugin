@@ -1,5 +1,6 @@
 package com.bjrushworth29.lambdaminigames.items;
 
+import com.bjrushworth29.lambdaminigames.enums.Item;
 import com.bjrushworth29.lambdaminigames.managers.ItemManager;
 import com.bjrushworth29.lambdaminigames.managers.ScreenManager;
 import org.bukkit.entity.Player;
@@ -14,7 +15,7 @@ public class SelectGameItem implements Listener {
 		Player player = event.getPlayer();
 		ItemStack item = event.getItem();
 
-		if (item == null || !ItemManager.equalMeta(item, ItemManager.getItem("selectGame"))) {
+		if (item == null || !ItemManager.equalMeta(item, ItemManager.getItem(Item.SELECT_GAME))) {
 			return;
 		}
 

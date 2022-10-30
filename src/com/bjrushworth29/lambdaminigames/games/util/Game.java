@@ -2,6 +2,7 @@ package com.bjrushworth29.lambdaminigames.games.util;
 
 import com.bjrushworth29.lambdaminigames.enums.*;
 import com.bjrushworth29.lambdaminigames.managers.GameManager;
+import com.bjrushworth29.lambdaminigames.managers.InventoryLoadoutManager;
 import com.bjrushworth29.lambdaminigames.managers.PlayerConstraintManager;
 import com.bjrushworth29.lambdaminigames.managers.WorldManager;
 import com.bjrushworth29.lambdaminigames.utils.*;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 public class Game {
 	private final GameType gameType;
 	private final Constraints gameConstraints;
+	private final InventoryLoadout inventoryLoadout;
 
 	private final int maxPlayers;
 	private final int minPlayers;
@@ -40,16 +42,16 @@ public class Game {
 	private int joiningPlayers;
 	private ArrayList<Team> teams;
 
-	private Countdown cancelTimer;
-
 	public Game(GameType gameType,
 				Constraints gameConstraints,
+				InventoryLoadout inventoryLoadout,
 				int minPlayers,
 				int maxPlayers,
 	            boolean useTeams,
 				boolean canRejoin,
 				int startingLives,
 				int spawnProtectionLength) {
+		this.inventoryLoadout = inventoryLoadout;
 		this.maxPlayers = maxPlayers;
 		this.minPlayers = minPlayers;
 		this.startingLives = startingLives;
@@ -63,6 +65,7 @@ public class Game {
 
 	@SuppressWarnings("CopyConstructorMissesField")
 	public Game(Game game) {
+		this.inventoryLoadout = game.getInventoryLoadout();
 		this.maxPlayers = game.getMaxPlayers();
 		this.minPlayers = game.getMinPlayers();
 		this.startingLives = game.getStartingLives();
@@ -82,23 +85,6 @@ public class Game {
 		worldSettings.createMap(mapOffset);
 
 		gameState = GameState.WAITING;
-
-		cancelTimer = new Countdown(
-				10,
-				null,
-				() -> {
-					if (getPlayers().size() < minPlayers) {
-						for (Player player : getPlayers()) {
-							player.sendMessage("Failed to start game due to not having enough players");
-						}
-
-						Debug.info(DebugLevel.MIN, "Failed to start game due to not having enough players");
-						cancel();
-					}
-				}
-		);
-
-		cancelTimer.start();
 	}
 
 	public void addPlayer(Player player) {
@@ -177,12 +163,10 @@ public class Game {
 			player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "GAME CANCELLED: Not enough players to start!");
 		}
 
-		GameManager.removeActiveGame(this);
+		GameManager.removeActiveGame(this, false);
 	}
 
 	private void start() {
-		cancelTimer.stop();
-
 		if (gameState != GameState.WAITING) {
 			Debug.warn("Failed to start game '%s' while in state '%s'", mapSettings.getName(), gameState.toString());
 
@@ -191,6 +175,10 @@ public class Game {
 
 		gameState = GameState.STARTING;
 		Debug.info(DebugLevel.FULL, "Starting game");
+
+		for (Player player : getPlayers()) {
+			InventoryLoadoutManager.giveLoadout(player, inventoryLoadout);
+		}
 
 		new Countdown(
 				5,
@@ -232,7 +220,7 @@ public class Game {
 		Debug.info(DebugLevel.FULL, "Ended game");
 
 		if (winner == null) {
-			GameManager.removeActiveGame(this);
+			GameManager.removeActiveGame(this, false);
 
 			for (Player player : getPlayers()) {
 				WorldManager.teleportToSpawn(player, WorldManager.getWorld(DefaultWorld.HUB));
@@ -266,7 +254,7 @@ public class Game {
 		new Countdown(
 				5,
 				null,
-				() -> GameManager.removeActiveGame(this)
+				() -> GameManager.removeActiveGame(this, false)
 		).start();
 	}
 
@@ -441,6 +429,10 @@ public class Game {
 
 	public GameMap getMap() {
 		return mapSettings;
+	}
+
+	public InventoryLoadout getInventoryLoadout() {
+		return inventoryLoadout;
 	}
 }
 

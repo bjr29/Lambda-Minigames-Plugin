@@ -2,8 +2,10 @@ package com.bjrushworth29.lambdaminigames.managers;
 
 import com.bjrushworth29.lambdaminigames.enums.DebugLevel;
 import com.bjrushworth29.lambdaminigames.enums.DefaultInventoryLoadout;
+import com.bjrushworth29.lambdaminigames.enums.Item;
 import com.bjrushworth29.lambdaminigames.utils.Debug;
 import com.bjrushworth29.lambdaminigames.utils.InventoryLoadout;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -19,26 +21,47 @@ public class InventoryLoadoutManager {
 		final ItemStack[] inventoryTemplate = new ItemStack[27];
 		final ItemStack[] armorTemplate = new ItemStack[4];
 
-		// Hub
-		ItemStack[] hubHotbar = hotbarTemplate.clone();
-		hubHotbar[0] = ItemManager.getItem("selectGame");
+		ItemStack[] hotbar;
+		ItemStack[] inventory;
+		ItemStack[] armor;
 
-		LOADOUTS.put(DefaultInventoryLoadout.HUB.toString(), new InventoryLoadout(hubHotbar));
+		// Hub
+		hotbar = hotbarTemplate.clone();
+		hotbar[0] = ItemManager.getItem("selectGame");
+
+		addLoadout(DefaultInventoryLoadout.HUB.toString(), new InventoryLoadout(hotbar));
 
 		// Hub (Queued)
-		ItemStack[] hubQueuedHotbar = hotbarTemplate.clone();
-		hubQueuedHotbar[0] = ItemManager.getItem("leaveQueue");
+		hotbar = hotbarTemplate.clone();
+		hotbar[0] = ItemManager.getItem("leaveQueue");
 
-		LOADOUTS.put(DefaultInventoryLoadout.HUB_QUEUED.toString(), new InventoryLoadout(hubQueuedHotbar));
+		addLoadout(DefaultInventoryLoadout.HUB_QUEUED.toString(), new InventoryLoadout(hotbar));
+
+		// Duels
+		hotbar = hotbarTemplate.clone();
+		hotbar[0] = ItemManager.getItem(Item.DIAMOND_SWORD);
+		hotbar[1] = ItemManager.create(Material.GOLDEN_APPLE, 4);
+
+		armor = armorTemplate.clone();
+		armor[0] = ItemManager.create(Material.DIAMOND_HELMET);
+		armor[1] = ItemManager.create(Material.DIAMOND_CHESTPLATE);
+		armor[2] = ItemManager.create(Material.DIAMOND_LEGGINGS);
+		armor[3] = ItemManager.create(Material.DIAMOND_BOOTS);
+
+		addLoadout(DefaultInventoryLoadout.DUELS.toString(), new InventoryLoadout(hotbar, armor));
 
 		Debug.info(DebugLevel.MIN, "Initialised inventory loadouts");
 	}
 
-	public static InventoryLoadout getDefaultLoadout(DefaultInventoryLoadout inventoryLoadout) {
-		return getDefaultLoadout(inventoryLoadout.toString());
+	public static void addLoadout(String name, InventoryLoadout inventoryLoadout) {
+		LOADOUTS.put(name, inventoryLoadout);
 	}
 
-	public static InventoryLoadout getDefaultLoadout(String name) {
+	public static InventoryLoadout getLoadout(DefaultInventoryLoadout inventoryLoadout) {
+		return getLoadout(inventoryLoadout.toString());
+	}
+
+	public static InventoryLoadout getLoadout(String name) {
 		InventoryLoadout loadout = LOADOUTS.get(name);
 
 		if (loadout == null) {
@@ -48,7 +71,7 @@ public class InventoryLoadoutManager {
 		return loadout;
 	}
 
-	public static void giveInventoryLoadout(Player player, InventoryLoadout loadout) {
+	public static void giveLoadout(Player player, InventoryLoadout loadout) {
 		PlayerInventory inventory = player.getInventory();
 
 		if (loadout == null) {

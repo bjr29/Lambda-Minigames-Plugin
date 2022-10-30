@@ -28,7 +28,7 @@ public class PlayerChangedWorld implements Listener {
 				game.removePlayer(player);
 			}
 
-			InventoryLoadoutManager.giveInventoryLoadout(player, InventoryLoadoutManager.getDefaultLoadout(DefaultInventoryLoadout.HUB));
+			InventoryLoadoutManager.giveLoadout(player, InventoryLoadoutManager.getLoadout(DefaultInventoryLoadout.HUB));
 			PlayerConstraintManager.applyConstraints(player, Constraints.HUB);
 		}
 	}

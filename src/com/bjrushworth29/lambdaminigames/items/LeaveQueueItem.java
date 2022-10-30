@@ -1,5 +1,6 @@
 package com.bjrushworth29.lambdaminigames.items;
 
+import com.bjrushworth29.lambdaminigames.enums.Item;
 import com.bjrushworth29.lambdaminigames.managers.GameManager;
 import com.bjrushworth29.lambdaminigames.managers.ItemManager;
 import org.bukkit.entity.Player;
@@ -14,7 +15,7 @@ public class LeaveQueueItem implements Listener {
 		Player player = event.getPlayer();
 		ItemStack item = event.getItem();
 
-		if (item == null || !ItemManager.equalMeta(item, ItemManager.getItem("leaveQueue"))) {
+		if (item == null || !ItemManager.equalMeta(item, ItemManager.getItem(Item.LEAVE_QUEUE))) {
 			return;
 		}
 

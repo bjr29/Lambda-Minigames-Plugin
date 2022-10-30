@@ -1,6 +1,7 @@
 package com.bjrushworth29.lambdaminigames.screens;
 
 import com.bjrushworth29.lambdaminigames.enums.GameName;
+import com.bjrushworth29.lambdaminigames.enums.ScreenItem;
 import com.bjrushworth29.lambdaminigames.managers.GameManager;
 import com.bjrushworth29.lambdaminigames.managers.ItemManager;
 import com.bjrushworth29.lambdaminigames.managers.ScreenManager;
@@ -25,10 +26,15 @@ public class SelectGameScreen implements Listener {
 		event.setCancelled(true);
 		player.closeInventory();
 
-		ItemStack sumoGameButton = ItemManager.getItem("screenSumoGame");
+		checkButtonPress(ScreenItem.SUMO_GAME, clicked, player, GameName.SUMO);
+		checkButtonPress(ScreenItem.DUELS_GAME, clicked, player, GameName.DUELS);
+	}
+
+	private void checkButtonPress(ScreenItem buttonName, ItemStack clicked, Player player, GameName gameMode) {
+		ItemStack sumoGameButton = ItemManager.getItem(buttonName.toString());
 
 		if (ItemManager.equalMeta(clicked, sumoGameButton)) {
-			GameManager.enterQueue(player, GameName.SUMO.toString());
+			GameManager.enterQueue(player, gameMode.toString());
 		}
 	}
 }

@@ -54,7 +54,7 @@ public class PlayerConstraintManager {
 				true,
 				GameMode.SURVIVAL,
 				true,
-				true,
+				false,
 				true,
 				true,
 				false,

@@ -34,6 +34,12 @@
 	padding: 6px !important;
 }
 
+.kanban-plugin__item-tag[href="#minor-bug"] {
+	color: #fff !important;
+	background-color: #d4281c77 !important;
+	padding: 6px !important;
+}
+
 .kanban-plugin__item-tag[href="#feature"] {
 	color: #fff !important;
 	background-color: #188509 !important;

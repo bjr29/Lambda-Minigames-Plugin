@@ -17,12 +17,13 @@ kanban-plugin: basic
 
 ## Todo
 
-- [ ] Duels game modes<br>- [ ] Regular<br>- [ ] Pot<br>- [ ] Soup<br><br>#feature #game-mode #priority-high
-- [ ] Fix choppy camera movement while waiting for the game to start<br><br>#bug #priority-medium
+- [ ] Fix choppy camera movement while waiting for the game to start<br><br>#minor-bug #priority-medium
 
 
 ## In Progress
 
+- [ ] Duels game modes<br>- [x] Regular<br>- [ ] Pot<br>- [ ] Soup<br><br>#feature #game-mode #priority-high
+- [ ] Basic duels map<br><br>#building #feature #priority-high
 - [ ] Lobby map<br><br>#building #priority-medium
 
 

@@ -117,7 +117,7 @@ public class GameManager {
 
 		player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "You have entered the queue!");
 
-		InventoryLoadoutManager.giveInventoryLoadout(player, InventoryLoadoutManager.getDefaultLoadout(DefaultInventoryLoadout.HUB_QUEUED));
+		InventoryLoadoutManager.giveLoadout(player, InventoryLoadoutManager.getLoadout(DefaultInventoryLoadout.HUB_QUEUED));
 
 		Countdown countdown = gameQueue.getCountdown();
 
@@ -142,7 +142,7 @@ public class GameManager {
 			return;
 		}
 
-		InventoryLoadoutManager.giveInventoryLoadout(player, InventoryLoadoutManager.getDefaultLoadout(DefaultInventoryLoadout.HUB));
+		InventoryLoadoutManager.giveLoadout(player, InventoryLoadoutManager.getLoadout(DefaultInventoryLoadout.HUB));
 		player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "You have left the queue!");
 
 		ArrayList<Player> players = queue.getPlayers();
@@ -205,7 +205,7 @@ public class GameManager {
 				DefaultWorld.SUMO,
 				0,
 				0,
-				Arrays.asList(GameType.SUMO),
+				Arrays.asList(GameType.SUMO, GameType.LAST_STANDING),
 				Arrays.asList(
 						new TeamObject<>(
 							new Location(WorldManager.getWorld(DefaultWorld.GAMES), -5.5, 100, 0.5)
@@ -232,6 +232,19 @@ public class GameManager {
 		GAMES.put("sumo", new Game(
 				GameType.SUMO,
 				Constraints.PVP_SUMO,
+				null,
+				2,
+				2,
+				false,
+				false,
+				1,
+				0
+		));
+
+		GAMES.put("duels", new Game(
+				GameType.LAST_STANDING,
+				Constraints.PVP_DEFAULT,
+				InventoryLoadoutManager.getLoadout(DefaultInventoryLoadout.DUELS),
 				2,
 				2,
 				false,
@@ -241,8 +254,8 @@ public class GameManager {
 		));
 	}
 
-	public static void removeActiveGame(Game game) {
-		if (!EnableRemoveGameCommand.state) {
+	public static void removeActiveGame(Game game, boolean force) {
+		if (!EnableRemoveGameCommand.state && !force) {
 			return;
 		}
 
@@ -254,7 +267,7 @@ public class GameManager {
 
 	public static void removeActiveGames() {
 		for (Game game : ACTIVE_GAMES) {
-			removeActiveGame(game);
+			removeActiveGame(game, true);
 		}
 	}
 
@@ -265,6 +278,7 @@ public class GameManager {
 			GAMES.put(gameName, new Game(
 					game.getGameType(),
 					game.getGameConstraints(),
+					game.getInventoryLoadout(),
 					1,
 					game.getMaxPlayers(),
 					game.canUseTeams(),

@@ -66,6 +66,7 @@ public class LambdaMinigames extends JavaPlugin {
 		initEventClass(new PlayerLeftServer());
 		initEventClass(new PlayerMoved());
 		initEventClass(new PlayerVelocity());
+		initEventClass(new WeatherChanged());
 	}
 
 	private void initItemEvents() {

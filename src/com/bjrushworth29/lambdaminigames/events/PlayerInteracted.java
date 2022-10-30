@@ -2,6 +2,7 @@ package com.bjrushworth29.lambdaminigames.events;
 
 import com.bjrushworth29.lambdaminigames.managers.PlayerConstraintManager;
 import com.bjrushworth29.lambdaminigames.utils.PlayerConstraints;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,6 +14,10 @@ public class PlayerInteracted implements Listener {
 		Player player = event.getPlayer();
 
 		PlayerConstraints constraints = PlayerConstraintManager.getAppliedConstraints(player);
+
+		if (event.getMaterial() == Material.GOLDEN_APPLE) {
+			return;
+		}
 
 		event.setCancelled(
 				(!constraints.canInteractBlocks() && event.hasBlock())

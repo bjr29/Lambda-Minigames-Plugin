@@ -20,7 +20,7 @@ public class PlayerJoinedServer implements Listener {
 
 		WorldManager.teleportToSpawn(player, WorldManager.getWorld(DefaultWorld.HUB));
 
-		InventoryLoadoutManager.giveInventoryLoadout(player, InventoryLoadoutManager.getDefaultLoadout(DefaultInventoryLoadout.HUB));
+		InventoryLoadoutManager.giveLoadout(player, InventoryLoadoutManager.getLoadout(DefaultInventoryLoadout.HUB));
 		PlayerConstraintManager.applyConstraints(player, "hub");
 
 		player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "Welcome!");

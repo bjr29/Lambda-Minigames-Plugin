@@ -23,6 +23,14 @@ public class InventoryLoadout {
 	}
 
 	/**
+     * @param hotbar Must be of length 9
+     * @param armor  Must be of length 4
+     */
+	public InventoryLoadout(ItemStack[] hotbar,  ItemStack[] armor) throws InvalidParameterException {
+		this(hotbar, new ItemStack[27], armor);
+	}
+
+	/**
 	 * @param hotbar Must be of length 9
 	 * @param inventory Must be of length 27
 	 * @param armor Must be of length 4
