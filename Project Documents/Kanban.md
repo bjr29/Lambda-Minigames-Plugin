@@ -22,14 +22,14 @@ kanban-plugin: basic
 
 ## In Progress
 
-- [ ] Duels game modes<br>- [x] Regular<br>- [ ] Pot<br>- [ ] Soup<br><br>#feature #game-mode #priority-high
-- [ ] Basic duels map<br><br>#building #feature #priority-high
+- [ ] Duels game modes<br>- [x] Regular<br>- [x] Rod<br>- [ ] Pot<br>- [x] Soup<br>- [ ] Boxing<br>- [x] Bow<br><br>#feature #game-mode #priority-high
 - [ ] Lobby map<br><br>#building #priority-medium
 
 
 ## Testing
 
 - [ ] Leaving the game before it starts<br>- [x] 2 players<br>- [ ] \>2 players<br><br>#feature #priority-high
+- [ ] Refactor InventoryManager.java<br><br>#refactor #priority-medium
 
 
 ## Beta 1
@@ -45,6 +45,7 @@ kanban-plugin: basic
 - [x] Prevent items from being dropped<br><br>#bug #priority-highest
 - [x] Leave queue<br><br>#feature #priority-highest
 - [x] Queuing System with multiple players<br>- [x] When players stay<br>- [x] When player a player leaves<br>- [x] When all players leave<br><br>#feature #priority-highest
+- [x] Basic duels map<br><br>#building #feature #priority-high
 - [x] Fix game not loading correctly due to player leaving queue on the last possible second<br><br>#bug #priority-high
 - [x] Refine knockback values<br><br>#adjustment #priority-high
 - [x] Prevent glitchy movement while waiting to start game<br><br>#bug #priority-high

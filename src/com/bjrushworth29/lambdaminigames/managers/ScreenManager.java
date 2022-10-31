@@ -1,6 +1,7 @@
 package com.bjrushworth29.lambdaminigames.managers;
 
 import com.bjrushworth29.lambdaminigames.enums.InventoryRows;
+import com.bjrushworth29.lambdaminigames.enums.ScreenItem;
 import com.bjrushworth29.lambdaminigames.utils.Debug;
 import com.bjrushworth29.lambdaminigames.enums.DebugLevel;
 import org.bukkit.Bukkit;
@@ -16,8 +17,10 @@ public class ScreenManager {
 		ItemStack[] content;
 
 		content = new ItemStack[InventoryRows.THREE.getValue()];
-		content[InventoryRows.ONE.getValue() + 1] = ItemManager.getItem("screenSumoGame");
-		content[InventoryRows.ONE.getValue() + 2] = ItemManager.getItem("screenDuelsGame");
+		content[InventoryRows.ONE.getValue() + 1] = ItemManager.getItem(ScreenItem.SUMO_GAME.toString());
+		content[InventoryRows.ONE.getValue() + 2] = ItemManager.getItem(ScreenItem.DUELS_GAME.toString());
+		content[InventoryRows.ONE.getValue() + 3] = ItemManager.getItem(ScreenItem.DUELS_ROD.toString());
+		content[InventoryRows.ONE.getValue() + 4] = ItemManager.getItem(ScreenItem.DUELS_BOW.toString());
 
 		SCREENS.put("selectGame", create(content));
 

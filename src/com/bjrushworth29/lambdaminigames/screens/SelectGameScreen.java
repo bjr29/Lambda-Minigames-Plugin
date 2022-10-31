@@ -28,6 +28,8 @@ public class SelectGameScreen implements Listener {
 
 		checkButtonPress(ScreenItem.SUMO_GAME, clicked, player, GameName.SUMO);
 		checkButtonPress(ScreenItem.DUELS_GAME, clicked, player, GameName.DUELS);
+		checkButtonPress(ScreenItem.DUELS_ROD, clicked, player, GameName.DUELS_ROD);
+		checkButtonPress(ScreenItem.DUELS_BOW, clicked, player, GameName.DUELS_BOW);
 	}
 
 	private void checkButtonPress(ScreenItem buttonName, ItemStack clicked, Player player, GameName gameMode) {

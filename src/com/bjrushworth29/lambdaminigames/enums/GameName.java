@@ -2,7 +2,9 @@ package com.bjrushworth29.lambdaminigames.enums;
 
 public enum GameName {
 	SUMO("sumo"),
-	DUELS("duels");
+	DUELS("duels"),
+	DUELS_ROD("duelsRod"),
+	DUELS_BOW("duelsBow");
 
 	private final String value;
 

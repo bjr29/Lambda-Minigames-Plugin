@@ -117,7 +117,7 @@ public class GameManager {
 
 		player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "You have entered the queue!");
 
-		InventoryLoadoutManager.giveLoadout(player, InventoryLoadoutManager.getLoadout(DefaultInventoryLoadout.HUB_QUEUED));
+		InventoryManager.give(player, InventoryManager.get(DefaultInventoryLoadout.HUB_QUEUED));
 
 		Countdown countdown = gameQueue.getCountdown();
 
@@ -138,11 +138,10 @@ public class GameManager {
 		GameQueue queue = getPlayerGameQueue(player);
 
 		if (queue == null) {
-			Debug.warn("Player '%s' attempted to leave queue whilst not in a queue!", player.getName());
 			return;
 		}
 
-		InventoryLoadoutManager.giveLoadout(player, InventoryLoadoutManager.getLoadout(DefaultInventoryLoadout.HUB));
+		InventoryManager.give(player, InventoryManager.get(DefaultInventoryLoadout.HUB));
 		player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "You have left the queue!");
 
 		ArrayList<Player> players = queue.getPlayers();
@@ -205,7 +204,7 @@ public class GameManager {
 				DefaultWorld.SUMO,
 				0,
 				0,
-				Arrays.asList(GameType.SUMO, GameType.LAST_STANDING),
+				Arrays.asList(GameType.SUMO),
 				Arrays.asList(
 						new TeamObject<>(
 							new Location(WorldManager.getWorld(DefaultWorld.GAMES), -5.5, 100, 0.5)
@@ -226,6 +225,33 @@ public class GameManager {
 				null,
 				90
 		));
+
+		GAME_MAPS.add(new GameMap(
+				"Duels Platform",
+				DefaultWorld.DUELS,
+				0,
+				0,
+				Arrays.asList(GameType.LAST_STANDING),
+				Arrays.asList(
+						new TeamObject<>(
+							new Location(WorldManager.getWorld(DefaultWorld.GAMES), -22.5, 100, 0.5)
+									.setDirection(new Vector(90 / Math.PI, 0, 0)),
+								null,
+								false,
+								true
+						),
+						new TeamObject<>(
+							new Location(WorldManager.getWorld(DefaultWorld.GAMES), 23.5, 100, 0.5)
+									.setDirection(new Vector(-90 / Math.PI, 0, 0)),
+								null,
+								false,
+								true
+						)
+				),
+				null,
+				null,
+				80
+		));
 	}
 
 	private static void createGames() {
@@ -244,7 +270,43 @@ public class GameManager {
 		GAMES.put("duels", new Game(
 				GameType.LAST_STANDING,
 				Constraints.PVP_DEFAULT,
-				InventoryLoadoutManager.getLoadout(DefaultInventoryLoadout.DUELS),
+				InventoryManager.get(DefaultInventoryLoadout.DUELS),
+				2,
+				2,
+				false,
+				false,
+				1,
+				0
+		));
+
+		GAMES.put("duelsRod", new Game(
+				GameType.LAST_STANDING,
+				Constraints.PVP_DEFAULT,
+				InventoryManager.get(DefaultInventoryLoadout.DUELS_ROD),
+				2,
+				2,
+				false,
+				false,
+				1,
+				0
+		));
+
+		GAMES.put("duelsBow", new Game(
+				GameType.LAST_STANDING,
+				Constraints.PVP_DEFAULT,
+				InventoryManager.get(DefaultInventoryLoadout.DUELS_BOW),
+				2,
+				2,
+				false,
+				false,
+				1,
+				0
+		));
+
+		GAMES.put("duelsSoup", new Game(
+				GameType.LAST_STANDING,
+				Constraints.PVP_DEFAULT,
+				InventoryManager.get(DefaultInventoryLoadout.DUELS_SOUP),
 				2,
 				2,
 				false,

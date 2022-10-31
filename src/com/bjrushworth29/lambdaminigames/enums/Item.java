@@ -3,7 +3,9 @@ package com.bjrushworth29.lambdaminigames.enums;
 public enum Item {
 	SELECT_GAME("selectGame"),
 	LEAVE_QUEUE("leaveQueue"),
-	DIAMOND_SWORD("diamondSword");
+	DIAMOND_SWORD("diamondSword"),
+	INFINITY_BOW("infinityBow"),
+	INSTANT_SOUP("instantSoup");
 
 	private final String value;
 

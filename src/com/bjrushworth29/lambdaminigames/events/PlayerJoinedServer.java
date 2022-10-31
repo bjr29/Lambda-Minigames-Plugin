@@ -2,7 +2,7 @@ package com.bjrushworth29.lambdaminigames.events;
 
 import com.bjrushworth29.lambdaminigames.enums.DefaultInventoryLoadout;
 import com.bjrushworth29.lambdaminigames.enums.DefaultWorld;
-import com.bjrushworth29.lambdaminigames.managers.InventoryLoadoutManager;
+import com.bjrushworth29.lambdaminigames.managers.InventoryManager;
 import com.bjrushworth29.lambdaminigames.managers.PlayerConstraintManager;
 import com.bjrushworth29.lambdaminigames.managers.WorldManager;
 import org.bukkit.ChatColor;
@@ -20,7 +20,7 @@ public class PlayerJoinedServer implements Listener {
 
 		WorldManager.teleportToSpawn(player, WorldManager.getWorld(DefaultWorld.HUB));
 
-		InventoryLoadoutManager.giveLoadout(player, InventoryLoadoutManager.getLoadout(DefaultInventoryLoadout.HUB));
+		InventoryManager.give(player, InventoryManager.get(DefaultInventoryLoadout.HUB));
 		PlayerConstraintManager.applyConstraints(player, "hub");
 
 		player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "Welcome!");

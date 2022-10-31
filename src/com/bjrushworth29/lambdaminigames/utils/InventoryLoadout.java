@@ -2,8 +2,9 @@ package com.bjrushworth29.lambdaminigames.utils;
 
 import org.bukkit.inventory.ItemStack;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class InventoryLoadout {
@@ -11,46 +12,32 @@ public class InventoryLoadout {
 	private final ItemStack[] inventory;
 	private final ItemStack[] armor;
 
-	public InventoryLoadout() {
-		this(new ItemStack[9], new ItemStack[27], new ItemStack[4]);
+	public InventoryLoadout(HashMap<Integer, ItemStack> hotbar) {
+		this(hotbar, null, null);
 	}
 
-	/**
-     * @param hotbar Must be of length 9
-     */
-	public InventoryLoadout(ItemStack[] hotbar) {
-		this(hotbar, new ItemStack[27], new ItemStack[4]);
+	public InventoryLoadout(HashMap<Integer, ItemStack> hotbar, HashMap<Integer, ItemStack> armor) {
+		this(hotbar, null, armor);
 	}
 
-	/**
-     * @param hotbar Must be of length 9
-     * @param armor  Must be of length 4
-     */
-	public InventoryLoadout(ItemStack[] hotbar,  ItemStack[] armor) throws InvalidParameterException {
-		this(hotbar, new ItemStack[27], armor);
+	public InventoryLoadout(HashMap<Integer, ItemStack> hotbar, HashMap<Integer, ItemStack> inventory, HashMap<Integer, ItemStack> armor) {
+		this.hotbar = toItemStackArray(hotbar, 9);
+		this.inventory = toItemStackArray(inventory, 27);
+		this.armor = toItemStackArray(armor, 4);
 	}
 
-	/**
-	 * @param hotbar Must be of length 9
-	 * @param inventory Must be of length 27
-	 * @param armor Must be of length 4
-	 */
-	public InventoryLoadout(ItemStack[] hotbar, ItemStack[] inventory, ItemStack[] armor) throws InvalidParameterException {
-		this.hotbar = hotbar;
-		this.inventory = inventory;
-		this.armor = armor;
+	private ItemStack[] toItemStackArray(HashMap<Integer, ItemStack> itemStacks, int length) {
+		ItemStack[] array = new ItemStack[length];
 
-		if (hotbar.length != 9) {
-			throw new InvalidParameterException(String.format("Hotbar length should be 9 but is %d!", hotbar.length));
+		if (itemStacks == null) {
+			return array;
 		}
 
-		if (inventory.length != 27) {
-			throw new InvalidParameterException(String.format("Inventory length should be 27 but is %d!", inventory.length));
+		for (Map.Entry<Integer, ItemStack> entry : itemStacks.entrySet()) {
+			array[entry.getKey()] = entry.getValue();
 		}
 
-		if (armor.length != 4) {
-			throw new InvalidParameterException(String.format("Armor length should be 4 but is %d!", armor.length));
-		}
+		return array;
 	}
 
 	@SuppressWarnings({"UseBulkOperation", "ManualArrayToCollectionCopy"})

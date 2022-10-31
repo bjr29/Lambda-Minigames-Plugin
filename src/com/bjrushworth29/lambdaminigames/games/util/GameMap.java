@@ -40,11 +40,11 @@ public final class GameMap {
 		this.pointPitLocations = pointPitLocations;
 		this.killBelow = killBelow;
 
+		Debug.info(DebugLevel.MIN, "Loading map '%s' into memory", name);
+
 		World loaded_world = WorldManager.getWorld(world);
 
 		int mapScanSize = GameManager.GAME_SQUARE_SIZE / 16;
-
-		Debug.info(DebugLevel.MIN, "Loading map '%s' into memory", name);
 
 		map = BuildUtil.getBlocksInArea(
 				loaded_world,

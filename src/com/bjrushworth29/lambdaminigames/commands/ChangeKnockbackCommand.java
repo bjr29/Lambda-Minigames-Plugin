@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
 
 public class ChangeKnockbackCommand implements CommandExecutor {
 	public static double knockbackForward = 0.8;
-	public static double knockbackUpward = 0.5;
+	public static double knockbackUpward = 0.3;
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String string, String[] args) {

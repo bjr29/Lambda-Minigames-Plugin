@@ -2,7 +2,7 @@ package com.bjrushworth29.lambdaminigames.games.util;
 
 import com.bjrushworth29.lambdaminigames.enums.*;
 import com.bjrushworth29.lambdaminigames.managers.GameManager;
-import com.bjrushworth29.lambdaminigames.managers.InventoryLoadoutManager;
+import com.bjrushworth29.lambdaminigames.managers.InventoryManager;
 import com.bjrushworth29.lambdaminigames.managers.PlayerConstraintManager;
 import com.bjrushworth29.lambdaminigames.managers.WorldManager;
 import com.bjrushworth29.lambdaminigames.utils.*;
@@ -177,7 +177,7 @@ public class Game {
 		Debug.info(DebugLevel.FULL, "Starting game");
 
 		for (Player player : getPlayers()) {
-			InventoryLoadoutManager.giveLoadout(player, inventoryLoadout);
+			InventoryManager.give(player, inventoryLoadout);
 		}
 
 		new Countdown(

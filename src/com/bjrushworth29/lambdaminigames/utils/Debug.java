@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 public class Debug {
 	private static final Logger LOGGER;
 	private static DebugLevel debugLevel = DebugLevel.REGULAR;
-	private static boolean useDebugCommands = false;
+	private static boolean useDebugCommands = true;
 
 	static {
 		LOGGER = LambdaMinigames.getPlugin().getLogger();
